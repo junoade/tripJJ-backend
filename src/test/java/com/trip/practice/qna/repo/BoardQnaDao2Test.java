@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Transactional
 @SpringBootTest // Spring 환경에서 테스트
-public class BoardQnaDaoTest {
+public class BoardQnaDao2Test {
 	
 	@Autowired
 	private BoardQnaDao dao;

@@ -5,9 +5,9 @@ import lombok.*;
 
 @Getter
 @Setter
-public class BoardListDto {
+public class BoardListDto2 {
 
-	private List<BoardQnaDto> articles;
+	private List<BoardQnaDto2> articles;
 	private int currentPage;
 	private int totalPageCount;
 

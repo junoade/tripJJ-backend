@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyDto {
+public class ReplyDto2 {
 
 	private int replyNo;
 	private String comment; 
