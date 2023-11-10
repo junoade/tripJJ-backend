@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import com.trip.qna.ReplyDto;
 
-@Mapper
 public interface ReplyService {
 	
 //	등록
