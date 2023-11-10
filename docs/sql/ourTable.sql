@@ -57,3 +57,48 @@ INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES (
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('zzafy', 'TEST 투어 제안서7', '테스트 테스트', 25, '2023-10-05T05:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서8', '테스트 테스트', 25, '2023-10-05T06:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
+
+-- #1110 #Q&A 게시판 테이블 추가
+drop table if exists reply;
+drop table if exists board_qna;
+
+
+CREATE TABLE `board_qna` (
+                         `articleNo` int NOT NULL AUTO_INCREMENT,
+                         `userId` varchar(16) NOT NULL,
+                         `title` varchar(100) NOT NULL,
+                         `content` varchar(2000) NOT NULL,
+                         `hit` int DEFAULT '0',
+                         `publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         PRIMARY KEY (`articleNo`),
+                         KEY `board_qna_to_members_user_id_fk` (`userId`),
+                         CONSTRAINT `board_qna_to_members_user_id_fk` FOREIGN KEY (`userId`) REFERENCES `member` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs;
+
+CREATE TABLE `reply` (
+	`replyNo` int NOT NULL auto_increment,
+	 `comment` varchar(2000) NOT NULL,
+	 `publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     
+     `articleNo` int NOT NULL,
+     `userId` varchar(16) NOT NULL,
+     
+     PRIMARY KEY(`replyNo`),
+     
+     KEY `reply_to_board_qna_fk`(`articleNo`),
+     CONSTRAINT `reply_to_board_qna_fk` foreign key(`articleNo`) REFERENCES `board_qna`(`articleNo`),
+     
+     KEY  `reply_to_member_fk`(`userId`),
+     CONSTRAINT `reply_to_member_fk` foreign key(`userId`) REFERENCES `member`(`userId`)
+);
+
+INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('ssafy123', '해당 여행지 어떻게 가나요', 'content');
+
+INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
+	("정말 좋았어요", 1, 'taffy1234'),
+	("정말 좋았어요2", 1, 'test'),
+    ("근데 배고파요", 1, 'test');
+
+select * from member;
+select * from board_qna;
+select * from reply;
