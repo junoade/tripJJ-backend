@@ -26,7 +26,7 @@ public class BoardQnaServiceImpl implements BoardQnaService {
 
 	@Override
 	public BoardQnaDto getQna(int articleNo) throws SQLException {
-		return getQna(articleNo);
+		return dao.getQna(articleNo);
 	}
 
 	@Override
