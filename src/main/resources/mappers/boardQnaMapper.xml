@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.qna.dao.BoardQnaDao">
+
+	<!-- 질문 등록  -->
+	<insert id="registerQna" parameterType="BoardQnaDto">
+		INSERT INTO board_qna(userId, title, content)
+        VALUES(#{userId}, #{title}, #{content})
+	</insert>
+    
+    <!-- 검색 조건이 글 번호(숫자)인 경우에만 값 그대로 검색, 나머지는 concat으로 검색  -->
+    <select id="listQna" parameterType="map" resultType="BoardQnaDto" >
+    	SELECT *
+    	FROM board_qna
+    	<if test="word != null and word!=''">
+    		<if test="key=='articleNo'">
+    			WHERE articleNo = #{articleNo}
+    		</if>
+    		<if test="key!='articleNo'">
+    			WHERE ${key} LIKE CONCAT('%', #{word}, '%')
+    		</if>
+    	</if>
+    </select>
+    
+    <select id="getQna" parameterType="int" resultType="BoardQnaDto">
+    	SELECT *
+    	FROM board_qna
+    	WHERE articleNo = #{articleNo}
+    </select>
+    
+    <update id="updateHit" parameterType="int">    
+    	UPDATE board_qna
+        SET hit = hit + 1
+        WHERE articleNo = #{articleNo}
+    </update>
+    
+    <update id="modifyQna" parameterType="BoardQnaDto">
+    	UPDATE board_qna
+        SET title = #{title}, content = #{content}
+        WHERE articleNo = #{articleNo}
+    </update>
+    
+    <delete id="deleteQna" parameterType="int">
+    	DELETE FROM reply
+    	WHERE articleNo = #{articleNo};
+    
+    	DELETE FROM board_qna
+    	WHERE articleNo = #{articleNo};
+    </delete>
+    
+</mapper>

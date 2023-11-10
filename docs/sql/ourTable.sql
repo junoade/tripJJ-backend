@@ -1,5 +1,7 @@
 USE `enjoytrip_doublejj`;
 
+drop table if exists `reply`;
+drop table if exists `board_qna`;
 DROP TABLE IF EXISTS `HOTPLACE`;
 DROP TABLE IF EXISTS `board`;
 DROP TABLE IF EXISTS `member`;
@@ -59,10 +61,6 @@ INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES (
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
 
 -- #1110 #Q&A 게시판 테이블 추가
-drop table if exists reply;
-drop table if exists board_qna;
-
-
 CREATE TABLE `board_qna` (
                          `articleNo` int NOT NULL AUTO_INCREMENT,
                          `userId` varchar(16) NOT NULL,
@@ -93,11 +91,11 @@ CREATE TABLE `reply` (
 );
 
 INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('ssafy123', '해당 여행지 어떻게 가나요', 'content');
-
+	
 INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
 	("정말 좋았어요", 1, 'taffy1234'),
-	("정말 좋았어요2", 1, 'test'),
-    ("근데 배고파요", 1, 'test');
+	("정말 좋았어요2", 1, 'test'), ("근데 배고파요", 1, 'test'),
+    ("정말 좋았어요4", 1, 'ssafy123');
 
 select * from member;
 select * from board_qna;

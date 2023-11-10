@@ -19,7 +19,13 @@
 	</select>
 	
 	<delete id="deleteMember" parameterType="String">
-		DELETE FROM hotplace
+		DELETE FROM reply
+		WHERE userId=#{userId};
+		
+		DELETE FROM board_qna
+		WHERE userId=#{userId};
+	
+		DELETE FROM HOTPLACE
 		WHERE userId=#{userId};
 	
 		DELETE FROM board
