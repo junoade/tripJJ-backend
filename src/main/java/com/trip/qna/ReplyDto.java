@@ -9,7 +9,7 @@ import java.lang.reflect.Member;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Reply {
+public class ReplyDto {
 
 	private int replyNo;
 	private String comment; 

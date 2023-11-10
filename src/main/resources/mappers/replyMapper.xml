@@ -3,22 +3,24 @@
 <mapper namespace="com.trip.qna.dao.ReplyDao">
 
 	<!-- 질문 등록  -->
-	<insert id="registerReply" parameterType="Reply">
-		INSERT INTO board_qna(userId, title, content)
-        VALUES(#{userId}, #{title}, #{content})
+	<insert id="registerReply" parameterType="ReplyDto">
+		INSERT INTO reply(comment, articleNo, userId)
+        VALUES(#{comment}, #{articleNo}, #{userId})
 	</insert>
     
-    <select id="listReply" resultType="Reply" >
-    	SELECT * FROM reply
+    <select id="listReply" parameterType="int" resultType="ReplyDto" >
+    	SELECT * 
+    	FROM reply
+    	WHERE articleNo = #{articleNo}
     </select>
     
-    <select id="getReply" parameterType="int" resultType="Reply">
+    <select id="getReply" parameterType="int" resultType="ReplyDto">
     	SELECT *
     	FROM reply
     	WHERE replyNo = #{replyNo}
     </select>
     
-    <update id="modifyReply" parameterType="Reply">
+    <update id="modifyReply" parameterType="ReplyDto">
     	UPDATE reply
         SET comment = #{comment}
         WHERE replyNo = #{replyNo}
