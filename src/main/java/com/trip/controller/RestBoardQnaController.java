@@ -2,12 +2,14 @@ package com.trip.controller;
 
 import java.nio.charset.Charset;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +27,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/qna")
 public class RestBoardQnaController {
 
+	@Autowired
 	private BoardQnaServiceImpl bs;
 	
+	@Autowired
+	private ReplyServiceImpl rs;
 	
-//	등록
+//	QNA 등록
 	@PostMapping("/write")
 	public ResponseEntity<?> registerQna(@RequestBody BoardQnaDto boardQnaDto) {
 		log.debug("게시글 작성 : " + boardQnaDto.toString());
@@ -59,15 +65,25 @@ public class RestBoardQnaController {
 	}
 
 //	조회
+//	@GetMapping("/{articleNo}")
+//	public ResponseEntity<BoardQna> getArticle(@PathVariable int articleNo) throws Exception {
+//		log.info("getArticle - 호출 : " + articleNo);
+//		bs.updateHit(articleNo);
+//		return new ResponseEntity<BoardQnaDto>(bs.getQna(articleNo), HttpStatus.OK);
+//	}
+	
 	@GetMapping("/{articleNo}")
-	public ResponseEntity<BoardQnaDto> getArticle(@PathVariable int articleNo)
-			throws Exception {
+	public ResponseEntity<?> getArticle(@PathVariable int articleNo) throws Exception {
 		log.info("getArticle - 호출 : " + articleNo);
 		bs.updateHit(articleNo);
-		return new ResponseEntity<BoardQnaDto>(bs.getQna(articleNo), HttpStatus.OK);
+		
+		final Map<String, Object> map = new HashMap<String, Object>();
+		map.put("article", bs.getQna(articleNo));
+		map.put("replies", rs.listReply(articleNo));
+		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
-//	조회 - rmf qjsgh
+//	수정할 Q&A 조회
 	@GetMapping("/modify/{articleno}")
 	public ResponseEntity<BoardQnaDto> getModifyArticle(
 			@PathVariable("articleno") @ApiParam(value = "얻어올 글의 글번호.", required = true) int articleno)
@@ -87,7 +103,7 @@ public class RestBoardQnaController {
 	}
 	
 //	삭제
-	@PostMapping
+	@DeleteMapping("{articleNo}")
 	public ResponseEntity<?> deleteQna(@PathVariable int articleNo) throws SQLException {
 		log.debug("QNA 삭제 : ", articleNo);
 		bs.deleteQna(articleNo);
