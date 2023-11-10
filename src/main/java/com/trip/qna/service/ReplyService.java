@@ -19,4 +19,5 @@ public interface ReplyService {
 
 //	삭제
 	void deleteReply(int replyNo) throws SQLException;
+	
 }
