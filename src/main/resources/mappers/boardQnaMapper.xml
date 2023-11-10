@@ -14,7 +14,7 @@
     	FROM board_qna
     	<if test="word != null and word!=''">
     		<if test="key=='articleNo'">
-    			WHERE articleNo = #{articleNo}
+    			WHERE articleNo = #{word}
     		</if>
     		<if test="key!='articleNo'">
     			WHERE ${key} LIKE CONCAT('%', #{word}, '%')

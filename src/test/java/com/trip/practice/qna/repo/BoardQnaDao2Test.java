@@ -41,14 +41,14 @@ public class BoardQnaDao2Test {
 		map.put("key", "articleNo");
 		map.put("word", 0);
 		List<BoardQnaDto> list = dao.listQna(map);
-		log.debug("[글번호 검색1]\n", list);
+		log.debug("[글번호 검색1]\n", list.toString());
 		assertThat(list.isEmpty());
 		
 		map.clear();
 		map.put("key", "articleNo");
 		map.put("word", 2);
 		list = dao.listQna(map);
-		log.debug("[글번호 검색2]\n", list);
+		log.debug("[글번호 검색2]\n", list.toString());
 		assertThat(!list.isEmpty());
 	}
 	
