@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.trip.qna.BoardQnaDto;
+import com.trip.qna.ReplyDto;
 import com.trip.qna.service.BoardQnaServiceImpl;
 import com.trip.qna.service.ReplyServiceImpl;
 import io.swagger.annotations.ApiOperation;
@@ -65,14 +66,6 @@ public class RestBoardQnaController {
 			return exceptionHandling(e);
 		}
 	}
-
-//	조회
-//	@GetMapping("/{articleNo}")
-//	public ResponseEntity<BoardQna> getArticle(@PathVariable int articleNo) throws Exception {
-//		log.info("getArticle - 호출 : " + articleNo);
-//		bs.updateHit(articleNo);
-//		return new ResponseEntity<BoardQnaDto>(bs.getQna(articleNo), HttpStatus.OK);
-//	}
 	
 	@GetMapping("/{articleNo}")
 	public ResponseEntity<?> getArticle(@PathVariable int articleNo) throws Exception {
@@ -109,6 +102,46 @@ public class RestBoardQnaController {
 	public ResponseEntity<?> deleteQna(@PathVariable int articleNo) throws SQLException {
 		log.debug("QNA 삭제 : ", articleNo);
 		bs.deleteQna(articleNo);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+//	댓글 등록
+	@PostMapping("/reply/write")
+	public ResponseEntity<?> registerReply(@RequestBody ReplyDto replyDto) {
+		log.debug("댓글 작성 : " + replyDto.toString());
+		try {
+			int result = rs.registerReply(replyDto);
+			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+//			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+//	수정할 댓글 조회
+	@GetMapping("reply/modify/{replyno}")
+	public ResponseEntity<ReplyDto> getModifyReply(
+			@PathVariable("replyno") @ApiParam(value = "얻어올 댓글번호.", required = true) int replyno)
+			throws Exception {
+		log.info("getModifyReply - 호출 : " + replyno);
+		return new ResponseEntity<ReplyDto>(rs.getReply(replyno), HttpStatus.OK);
+	}
+	
+//	댓글 수정
+	@ApiOperation(value = "댓글 수정", notes = "수정할 댓글 정보를 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping("/reply")
+	public ResponseEntity<String> modifyReply(
+			@RequestBody @ApiParam(value = "수정할 댓글정보.", required = true) ReplyDto replyDto) throws Exception {
+		log.info("modifyReply - 호출 {}", replyDto);
+		rs.modifyReply(replyDto);
+		return ResponseEntity.ok().build();
+	}
+	
+//	댓글 삭제
+	@DeleteMapping("/reply/{replyNo}")
+	public ResponseEntity<?> deleteReply(@PathVariable int replyNo) throws SQLException {
+		log.debug("댓글 삭제 : ", replyNo);
+		rs.deleteReply(replyNo);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
