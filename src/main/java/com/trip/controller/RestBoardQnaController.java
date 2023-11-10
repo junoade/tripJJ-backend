@@ -58,7 +58,9 @@ public class RestBoardQnaController {
 			List<BoardQnaDto> list = bs.listQna(map);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-			return ResponseEntity.ok().headers(header).body(list);
+			Map<String, List<BoardQnaDto>> result = new HashMap<>();
+			result.put("articles", list);
+			return ResponseEntity.ok().headers(header).body(result);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}
