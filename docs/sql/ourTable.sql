@@ -44,7 +44,7 @@ CREATE TABLE HOTPLACE (
 -- select * from board;
 -- select * from hotplace;
 
-INSERT INTO `member` VALUES ('aasfy444','유현지','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
+INSERT INTO `member` VALUES ('ssafy', '지준호','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
                             ('ssafy123','최준호','$2a$10$6/Z/NgVi2c5vIGkbhve6xOJuUYvxInw4YGo5SXZDXAaqKj8DnWe9u','ajchoi0928@gmail.com','2023-10-06 07:42:42'),
                             ('taffy1234','김싸피','$2a$10$fQxtIPaG1aWQHMMUAdAUXO7z6M87rU39UD64L4qMwInHJhUFBem52','ssafy@ssafy.com','2023-10-06 07:43:28'),
                             ('test','테스트','$2a$10$tli5kNFPlkuxFxHcOTlLkusAJZXUBeVhoeMi0n.rM3snQkIze/vny','test@test.com','2023-10-06 07:44:11'),
@@ -54,8 +54,8 @@ INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES (
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서2', '테스트 테스트', 10, '2023-10-02T02:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서3', '테스트 테스트', 15, '2023-10-03T02:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서4', '테스트 테스트', 20, '2023-10-04T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('aasfy444', 'TEST 투어 제안서5', '테스트 테스트', 25, '2023-10-05T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('aasfy444', 'TEST 투어 제안서6', '테스트 테스트', 25, '2023-10-05T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서5', '테스트 테스트', 25, '2023-10-05T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서6', '테스트 테스트', 25, '2023-10-05T02:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('zzafy', 'TEST 투어 제안서7', '테스트 테스트', 25, '2023-10-05T05:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서8', '테스트 테스트', 25, '2023-10-05T06:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
@@ -75,27 +75,40 @@ CREATE TABLE `board_qna` (
 
 CREATE TABLE `reply` (
 	`replyNo` int NOT NULL auto_increment,
-	 `comment` varchar(2000) NOT NULL,
-	 `publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     
-     `articleNo` int NOT NULL,
-     `userId` varchar(16) NOT NULL,
-     
-     PRIMARY KEY(`replyNo`),
-     
-     KEY `reply_to_board_qna_fk`(`articleNo`),
-     CONSTRAINT `reply_to_board_qna_fk` foreign key(`articleNo`) REFERENCES `board_qna`(`articleNo`),
-     
-     KEY  `reply_to_member_fk`(`userId`),
-     CONSTRAINT `reply_to_member_fk` foreign key(`userId`) REFERENCES `member`(`userId`)
+	`comment` varchar(2000) NOT NULL,
+	`publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    `articleNo` int NOT NULL,
+    `userId` varchar(16) NOT NULL,
+    
+    PRIMARY KEY(`replyNo`),
+    
+    KEY `reply_to_board_qna_fk`(`articleNo`),
+    CONSTRAINT `reply_to_board_qna_fk` foreign key(`articleNo`) REFERENCES `board_qna`(`articleNo`),
+    
+    KEY  `reply_to_member_fk`(`userId`),
+    CONSTRAINT `reply_to_member_fk` foreign key(`userId`) REFERENCES `member`(`userId`)
 );
 
-INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('ssafy123', '해당 여행지 어떻게 가나요', 'content');
+INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('ssafy123', '해당 여행지 어떻게 가나요', '서울 경복궁 가려고 하는데요... 어떻게 가죠?');
+INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('test', '전주 한옥마을 맛집 알려주세요', '2023-11-11 ~ 11-13 전주 한옥마을 방문 예정인데요. 맛집 알려주세요!');
+INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('zzafy', '서울 20반 Double JJ 화이팅', '화이팅');
 	
 INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
-	("정말 좋았어요", 1, 'taffy1234'),
-	("정말 좋았어요2", 1, 'test'), ("근데 배고파요", 1, 'test'),
-    ("정말 좋았어요4", 1, 'ssafy123');
+	("지도 앱을 여셔서 검색해보세요", 1, 'taffy1234'),
+	("정말 좋았어요2", 1, 'test'),
+    ("근데 배고파요", 1, 'test'),
+    ("감사합니다", 1, 'ssafy123');
+
+INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
+	("쭈노네 물갈비 어떠세요?", 2, 'taffy1234'),
+	("정말 좋았어요22", 2, 'ssafy123'),
+    ("근데 배고파요33", 2, 'ssafy123'),
+    ("감사합니다", 2, 'test');
+
+INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
+	("화이팅!!!", 3, 'ssafy'),
+    ("화이팅!!!", 3, 'ssafy123'),
 
 select * from member;
 select * from board_qna;
