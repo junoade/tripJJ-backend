@@ -10,11 +10,10 @@ import java.util.*;
 public interface BoardQnaService {
 	
 //	등록
-	int registerQna(BoardQnaDto boardQnaDto) throws SQLException;
+	int writeQna(BoardQnaDto boardQnaDto) throws SQLException;
 	
 //	조회
-//	BoardQnaPagingList listQna(Map<String, Object> param) throws SQLException;
-	List<BoardQnaDto> listQna(Map<String, Object> param) throws SQLException;
+	BoardQnaPagingList listQna(Map<String, Object> param) throws SQLException;
 	BoardQnaDto getQna(int articleNo) throws SQLException;
 
 //	수정

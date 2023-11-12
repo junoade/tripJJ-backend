@@ -3,49 +3,67 @@
 <mapper namespace="com.trip.qna.dao.BoardQnaDao">
 
 	<!-- 질문 등록  -->
-	<insert id="registerQna" parameterType="BoardQnaDto">
+	<insert id="writeQna" parameterType="BoardQnaDto">
 		INSERT INTO board_qna(userId, title, content)
         VALUES(#{userId}, #{title}, #{content})
 	</insert>
-    
-    <!-- 검색 조건이 글 번호(숫자)인 경우에만 값 그대로 검색, 나머지는 concat으로 검색  -->
-    <select id="listQna" parameterType="map" resultType="BoardQnaDto" >
-    	SELECT *
-    	FROM board_qna
-    	<if test="word != null and word!=''">
-    		<if test="key=='articleNo'">
-    			WHERE articleNo = #{word}
-    		</if>
-    		<if test="key!='articleNo'">
-    			WHERE ${key} LIKE CONCAT('%', #{word}, '%')
-    		</if>
-    	</if>
-    </select>
-    
-    <select id="getQna" parameterType="int" resultType="BoardQnaDto">
-    	SELECT *
-    	FROM board_qna
-    	WHERE articleNo = #{articleNo}
-    </select>
-    
-    <update id="updateHit" parameterType="int">    
-    	UPDATE board_qna
-        SET hit = hit + 1
-        WHERE articleNo = #{articleNo}
-    </update>
-    
-    <update id="modifyQna" parameterType="BoardQnaDto">
-    	UPDATE board_qna
-        SET title = #{title}, content = #{content}
-        WHERE articleNo = #{articleNo}
-    </update>
-    
-    <delete id="deleteQna" parameterType="int">
-    	DELETE FROM reply
-    	WHERE articleNo = #{articleNo};
-    
-    	DELETE FROM board_qna
-    	WHERE articleNo = #{articleNo};
-    </delete>
-    
+	
+	<!-- 공통 sql 문 -->
+	<sql id="search">
+		<if test="key != null and key!='' and word != null and word!=''">
+  		<if test="key=='articleNo'">
+  			AND articleNo = #{word}
+  		</if>
+  		<if test="key!='articleNo'">
+  			AND ${key} LIKE CONCAT('%', #{word}, '%')
+  		</if>
+  	</if>
+	</sql>
+  
+  <!-- 추가1 -->
+  <select id="listQna" parameterType="map" resultType="BoardQnaDto" >
+  	SELECT *
+  	FROM board_qna
+  	<where>
+  		<include refid="search"></include>
+  	</where>
+  	ORDER BY articleNo DESC
+  	LIMIT #{start}, #{listsize}
+  </select>
+  
+  <!-- 추가2 -->
+  <select id="getTotalQnaCount" parameterType="map" resultType="int">
+  	SELECT COUNT(articleNo)
+  	FROM board_qna
+  	<where>
+  		<include refid="search"></include>
+  	</where>
+  </select>
+ 
+  <select id="getQna" parameterType="int" resultType="BoardQnaDto">
+  	SELECT *
+  	FROM board_qna
+  	WHERE articleNo = #{articleNo}
+  </select>
+  
+  <update id="updateHit" parameterType="int">    
+  	UPDATE board_qna
+      SET hit = hit + 1
+      WHERE articleNo = #{articleNo}
+  </update>
+  
+  <update id="modifyQna" parameterType="BoardQnaDto">
+  	UPDATE board_qna
+      SET title = #{title}, content = #{content}
+      WHERE articleNo = #{articleNo}
+  </update>
+  
+  <delete id="deleteQna" parameterType="int">
+  	DELETE FROM reply
+  	WHERE articleNo = #{articleNo};
+  
+  	DELETE FROM board_qna
+  	WHERE articleNo = #{articleNo};
+  </delete>
+  
 </mapper>

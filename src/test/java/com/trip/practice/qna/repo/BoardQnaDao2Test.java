@@ -118,7 +118,7 @@ public class BoardQnaDao2Test {
         board.setTitle("테스트입니다");
         board.setContent("테스트 코드 작성합니다.");
 
-        assertDoesNotThrow(() -> dao.registerQna(board));
+        assertDoesNotThrow(() -> dao.writeQna(board));
     }
 
 //  수정

@@ -11,6 +11,8 @@ import com.trip.qna.BoardQnaDto;
 import com.trip.qna.BoardQnaPagingList;
 import com.trip.qna.dao.BoardQnaDao;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
 public class BoardQnaServiceImpl implements BoardQnaService {
@@ -19,43 +21,34 @@ public class BoardQnaServiceImpl implements BoardQnaService {
 	private BoardQnaDao dao;
 	
 	@Override
-	public int registerQna(BoardQnaDto boardQnaDto) throws SQLException {
-		return dao.registerQna(boardQnaDto);
+	public int writeQna(BoardQnaDto boardQnaDto) throws SQLException {
+		return dao.writeQna(boardQnaDto);
 	}
-
-//	@Override
-//	public BoardQnaPagingList listQna(Map<String, Object> map) throws SQLException {
-//		Map<String, Object> param = new HashMap<String, Object>();
-//		param.put("word", map.get("word") == null ? "" : map.get("word"));
-//		int currentPage = Integer.parseInt((String)map.get("pgno") == null ? "1" : (String)map.get("pgno"));
-//		int sizePerPage = Integer.parseInt((String)map.get("spp") == null ? "20" : (String)map.get("spp"));
-//		int start = currentPage * sizePerPage - sizePerPage;
-//		param.put("start", start);
-//		param.put("listsize", sizePerPage);
-//
-//		String key = (String)map.get("key");
-//		param.put("key", key == null ? "" : key);
-//		if ("user_id".equals(key))
-//			param.put("key", key == null ? "" : "b.user_id");
-//		List<BoardQnaDto> list = dao.listQna(param);
-//
-//		if ("user_id".equals(key))
-//			param.put("key", key == null ? "" : "user_id");
-//		int totalArticleCount = dao.getTotalArticleCount(param);
-//		int totalPageCount = (totalArticleCount - 1) / sizePerPage + 1;
-//
-//		BoardListDto boardListDto = new BoardListDto();
-//		boardListDto.setArticles(list);
-//		boardListDto.setCurrentPage(currentPage);
-//		boardListDto.setTotalPageCount(totalPageCount);
-//
-//		return boardListDto;
-//	}
 	
 	@Override
-	public List<BoardQnaDto> listQna(Map<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
-		return dao.listQna(param);
+	public BoardQnaPagingList listQna(Map<String, Object> param) throws SQLException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String key = param.get("key")==null ? "" : (String)param.get("key");
+		Object word = param.get("word")==null ? "" : param.get("word");
+		int currentPage = Integer.parseInt(param.get("pgno") == null ? "1" : (String)param.get("pgno"));
+		int sizePerPage = Integer.parseInt(param.get("spp") == null ? "20" : (String)param.get("spp"));
+		int start = currentPage * sizePerPage - sizePerPage;
+		
+		map.put("key", key);
+		map.put("word", word);
+		map.put("start", start);
+		map.put("listsize", sizePerPage);
+
+		List<BoardQnaDto> list = dao.listQna(map);
+		int totalArticleCount = dao.getTotalQnaCount(map);
+		int totalPageCount = (totalArticleCount - 1) / sizePerPage + 1;
+		
+		BoardQnaPagingList boardQnaPagingList = new BoardQnaPagingList();
+		boardQnaPagingList.setArticles(list);
+		boardQnaPagingList.setTotalPageCount(totalPageCount);
+		boardQnaPagingList.setCurrentPage(currentPage);
+
+		return boardQnaPagingList;
 	}
 
 	@Override

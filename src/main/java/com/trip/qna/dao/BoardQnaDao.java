@@ -9,10 +9,12 @@ import java.util.*;
 public interface BoardQnaDao {
 	
 //	등록
-	int registerQna(BoardQnaDto boardQnaDto) throws SQLException;
+	int writeQna(BoardQnaDto boardQnaDto) throws SQLException;
 	
 //	조회
 	List<BoardQnaDto> listQna(Map<String, Object> param) throws SQLException;
+	List<BoardQnaDto> listQna2(Map<String, Object> param) throws SQLException;
+	int getTotalQnaCount(Map<String, Object> param) throws SQLException;
 	BoardQnaDto getQna(int articleNo) throws SQLException;
 
 //	수정

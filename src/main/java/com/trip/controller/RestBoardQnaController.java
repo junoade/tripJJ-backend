@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.trip.qna.BoardQnaDto;
+import com.trip.qna.BoardQnaPagingList;
 import com.trip.qna.ReplyDto;
 import com.trip.qna.service.BoardQnaServiceImpl;
 import com.trip.qna.service.ReplyServiceImpl;
@@ -43,7 +44,7 @@ public class RestBoardQnaController {
 	public ResponseEntity<?> registerQna(@RequestBody BoardQnaDto boardQnaDto) {
 		log.debug("게시글 작성 : " + boardQnaDto.toString());
 		try {
-			int result = bs.registerQna(boardQnaDto);
+			int result = bs.writeQna(boardQnaDto);
 			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
 //			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch(Exception e) {
@@ -51,16 +52,17 @@ public class RestBoardQnaController {
 		}
 	}
 	
-//	조회 - 검색
 	@GetMapping
 	public ResponseEntity<?> listArticle(@RequestParam Map<String, Object> map) {
 		log.info("listArticle map - {}", map);
 		try {
-			List<BoardQnaDto> list = bs.listQna(map);
+			BoardQnaPagingList boardQnaPagingList = bs.listQna(map);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-			Map<String, List<BoardQnaDto>> result = new HashMap<>();
-			result.put("articles", list);
+			Map<String, Object> result = new HashMap<>();
+			result.put("articles", boardQnaPagingList.getArticles());
+			result.put("currentPage", boardQnaPagingList.getCurrentPage());
+			result.put("totalPageCount", boardQnaPagingList.getTotalPageCount());
 			return ResponseEntity.ok().headers(header).body(result);
 		} catch (Exception e) {
 			return exceptionHandling(e);
