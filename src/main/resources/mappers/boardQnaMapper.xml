@@ -2,12 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.qna.dao.BoardQnaDao">
 
-	<!-- 질문 등록  -->
-	<insert id="writeQna" parameterType="BoardQnaDto">
-		INSERT INTO board_qna(userId, title, content)
-        VALUES(#{userId}, #{title}, #{content})
-	</insert>
-	
+	<!-- <resultMap id="boardQnaWithReply" type="BoardQnaDto" >
+    <id property="articleNo" column="articleNo" />
+    <result property="userId" column="userId" />
+    <result property="title" column="title" />
+    <result property="content" column="content" />
+    <result property="hit" column="hit" />
+    <result property="publishedDate" column="publishedDate" />
+    <collection property="replies" column="articleNo" javaType="list" ofType="ReplyDto">
+    	<id property="replyNo" column="replyNo" />
+      <result property="comment" column="comment"/>
+      <result property="publishedDate" column="publishedDate"/>
+      <result property="articleNo" column="articleNo"/>
+      <result property="userId" column="userId"/>
+    </collection>
+  </resultMap> -->
+
+	<resultMap type="BoardQnaDto" id="boardQna" >
+		<result property="articleNo" column="articleNo"/>
+    <result property="userId" column="userId" />
+    <result property="title" column="title" />
+    <result property="content" column="content" />
+  </resultMap>
+  
+  <resultMap type="BoardQnaDto" id="boardQnaWithReply" extends="boardQna">
+  	<collection property="replies" column="articleNo" javaType="list" ofType="ReplyDto" select="listReply"/>
+  </resultMap>
+
 	<!-- 공통 sql 문 -->
 	<sql id="search">
 		<if test="key != null and key!='' and word != null and word!=''">
@@ -19,9 +40,21 @@
   		</if>
   	</if>
 	</sql>
+
+	<!-- Q&A 등록 -->
+	<insert id="writeQna" parameterType="BoardQnaDto">
+		INSERT INTO board_qna(userId, title, content)
+		VALUES(#{userId}, #{title}, #{content})
+	</insert>
+	
+	<!-- Reply 등록  -->
+	<insert id="writeReply" parameterType="ReplyDto">
+		INSERT INTO reply(comment, articleNo, userId)
+		VALUES(#{comment}, #{articleNo}, #{userId})
+	</insert>
   
-  <!-- 추가1 -->
-  <select id="listQna" parameterType="map" resultType="BoardQnaDto" >
+  <!-- Q&A 조회 -->
+  <select id="listQna" parameterType="map" resultMap="boardQna" >
   	SELECT *
   	FROM board_qna
   	<where>
@@ -31,7 +64,7 @@
   	LIMIT #{start}, #{listsize}
   </select>
   
-  <!-- 추가2 -->
+  <!-- Q&A 개수 조회 -->
   <select id="getTotalQnaCount" parameterType="map" resultType="int">
   	SELECT COUNT(articleNo)
   	FROM board_qna
@@ -39,25 +72,50 @@
   		<include refid="search"></include>
   	</where>
   </select>
- 
-  <select id="getQna" parameterType="int" resultType="BoardQnaDto">
-  	SELECT *
-  	FROM board_qna
-  	WHERE articleNo = #{articleNo}
+  
+  <!-- Q&A 게시글과 댓글 정보 조회  -->
+  <select id="getQna" parameterType="int" resultMap="boardQnaWithReply">
+		SELECT *
+    FROM board_qna
+    WHERE articleNo = #{articleNo}
   </select>
   
+  <!-- 현재 Q&A 게시글의 모든 댓글 조회 -->
+  <select id="listReply" parameterType="int" resultType="ReplyDto" >
+    SELECT * 
+    FROM reply
+    WHERE articleNo = #{articleNo}
+	</select>
+	
+	<!-- 특정 댓글 조회 -->
+	<select id="getReply" parameterType="int" resultType="ReplyDto">
+    SELECT *
+		FROM reply
+    WHERE replyNo = #{replyNo}
+	</select>
+    
+  <!-- Q&A 게시글 조회수 증가 -->
   <update id="updateHit" parameterType="int">    
   	UPDATE board_qna
-      SET hit = hit + 1
-      WHERE articleNo = #{articleNo}
+    SET hit = hit + 1
+    WHERE articleNo = #{articleNo}
   </update>
   
+  <!-- Q&A 게시글 수정 -->
   <update id="modifyQna" parameterType="BoardQnaDto">
   	UPDATE board_qna
-      SET title = #{title}, content = #{content}
-      WHERE articleNo = #{articleNo}
+		SET title = #{title}, content = #{content}
+    WHERE articleNo = #{articleNo}
   </update>
   
+  <!-- 댓글 수정 -->
+  <update id="modifyReply" parameterType="ReplyDto">
+    UPDATE reply
+		SET comment = #{comment}
+    WHERE replyNo = #{replyNo}
+	</update>
+  
+  <!-- Q&A 삭제 -->
   <delete id="deleteQna" parameterType="int">
   	DELETE FROM reply
   	WHERE articleNo = #{articleNo};
@@ -66,4 +124,10 @@
   	WHERE articleNo = #{articleNo};
   </delete>
   
+  <!-- 댓글 삭제 -->
+  <delete id="deleteReply" parameterType="int">
+    DELETE FROM reply
+    WHERE replyNo = #{replyNo};
+	</delete>
+    
 </mapper>

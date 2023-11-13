@@ -98,17 +98,13 @@ INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES
 	("지도 앱을 여셔서 검색해보세요", 1, 'taffy1234'),
 	("정말 좋았어요2", 1, 'test'),
     ("근데 배고파요", 1, 'test'),
-    ("감사합니다", 1, 'ssafy123');
-
-INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
-	("쭈노네 물갈비 어떠세요?", 2, 'taffy1234'),
+    ("감사합니다", 1, 'ssafy123'),
+    ("쭈노네 물갈비 어떠세요?", 2, 'taffy1234'),
 	("정말 좋았어요22", 2, 'ssafy123'),
     ("근데 배고파요33", 2, 'ssafy123'),
-    ("감사합니다", 2, 'test');
-
-INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
-	("화이팅!!!", 3, 'ssafy'),
-    ("화이팅!!!", 3, 'ssafy123'),
+    ("감사합니다", 2, 'test'),
+    ("화이팅!!!", 3, 'ssafy'),
+    ("화이팅!!!", 3, 'ssafy123');
 
 select * from member;
 select * from board_qna;
