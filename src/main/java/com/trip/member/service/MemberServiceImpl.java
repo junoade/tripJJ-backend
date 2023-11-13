@@ -2,6 +2,7 @@ package com.trip.member.service;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.trip.member.MemberDto;
@@ -13,6 +14,14 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDao memberDao;
+	
+	
+//	@Value("${jwt.secret}")
+//	private String secretKey;
+	
+//	@Value("${jwt.expiredMs}")
+//	private String expiredMs;
+	
 	
 	@Override
 	public int registerMember(MemberDto member) {
