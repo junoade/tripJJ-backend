@@ -11,13 +11,13 @@
 	<!-- 공통 sql 문 -->
 	<sql id="search">
 		<if test="key != null and key!='' and word != null and word!=''">
-  		<if test="key=='articleNo'">
-  			AND articleNo = #{word}
+  			<if test="key=='articleNo'">
+  				AND articleNo = #{word}
+  			</if>
+  			<if test="key!='articleNo'">
+  				AND ${key} LIKE CONCAT('%', #{word}, '%')
+  			</if>
   		</if>
-  		<if test="key!='articleNo'">
-  			AND ${key} LIKE CONCAT('%', #{word}, '%')
-  		</if>
-  	</if>
 	</sql>
   
   <!-- 추가1 -->
@@ -40,10 +40,35 @@
   	</where>
   </select>
  
-  <select id="getQna" parameterType="int" resultType="BoardQnaDto">
+  <!-- 원본 -->
+  <!-- <select id="getQna" parameterType="int" resultType="BoardQnaDto">
   	SELECT *
   	FROM board_qna
   	WHERE articleNo = #{articleNo}
+  </select> -->
+  
+  <resultMap id="boardQnaWithReply" type="BoardQnaDto" >
+  	<id property="articleNo" column="articleNo" />
+  	<result property="userId" column="userId" />
+  	<result property="title" column="title" />
+  	<result property="content" column="content" />
+  	<result property="hit" column="hit" />
+  	<result property="publishedDate" column="publishedDate" />
+  	<collection property="replies" javaType="ArrayList">
+  		<id property="replyNo" column="replyNo" />
+  		<result property="comment" column="comment"/>
+  		<result property="publishedDate" column="publishedDate"/>
+  		<result property="articleNo" column="articleNo"/>
+  		<result property="userId" column="userId"/>
+  	</collection>
+  </resultMap>
+  
+  <!-- qna:reply가 1:N일 때 qna 1개 조회 -->
+  <select id="getQna" parameterType="int" resultMap="boardQnaWithReply">
+  	SELECT *
+  	FROM board_qna bq
+  	INNER JOIN reply r ON bq.articleNo=r.articleNo
+  	WHERE bq.articleNo = #{articleNo}
   </select>
   
   <update id="updateHit" parameterType="int">    

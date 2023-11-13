@@ -108,7 +108,7 @@ INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES
 
 INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
 	("화이팅!!!", 3, 'ssafy'),
-    ("화이팅!!!", 3, 'ssafy123'),
+    ("화이팅!!!", 3, 'ssafy123');
 
 select * from member;
 select * from board_qna;

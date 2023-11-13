@@ -46,7 +46,6 @@ public class RestBoardQnaController {
 		try {
 			int result = bs.writeQna(boardQnaDto);
 			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
-//			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch(Exception e) {
 			return exceptionHandling(e);
 		}
