@@ -29,6 +29,9 @@
 	<insert id="writeQna" parameterType="BoardQnaDto">
 		INSERT INTO board_qna(userId, title, content)
 		VALUES(#{userId}, #{title}, #{content})
+		<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
+			SELECT last_insert_id()
+		</selectKey>
 	</insert>
 	
 	<!-- Reply 등록  -->

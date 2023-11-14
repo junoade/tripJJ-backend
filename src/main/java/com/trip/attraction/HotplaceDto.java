@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class HotplaceDto {
+	
     int placeNo;
     String placeName;
     String visitedDate;

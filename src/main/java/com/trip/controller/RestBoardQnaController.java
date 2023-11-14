@@ -41,7 +41,8 @@ public class RestBoardQnaController {
 		log.debug("게시글 작성 : " + boardQnaDto.toString());
 		try {
 			int result = bs.writeQna(boardQnaDto);
-			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+			if(result!=1) return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+			return new ResponseEntity<Integer>(boardQnaDto.getArticleNo(), HttpStatus.CREATED);
 		} catch(Exception e) {
 			return exceptionHandling(e);
 		}

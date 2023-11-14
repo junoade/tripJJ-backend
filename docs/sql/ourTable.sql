@@ -44,12 +44,6 @@ CREATE TABLE HOTPLACE (
 -- select * from board;
 -- select * from hotplace;
 
-INSERT INTO `member` VALUES ('ssafy', '지준호','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
-                            ('ssafy123','최준호','$2a$10$6/Z/NgVi2c5vIGkbhve6xOJuUYvxInw4YGo5SXZDXAaqKj8DnWe9u','ajchoi0928@gmail.com','2023-10-06 07:42:42'),
-                            ('taffy1234','김싸피','$2a$10$fQxtIPaG1aWQHMMUAdAUXO7z6M87rU39UD64L4qMwInHJhUFBem52','ssafy@ssafy.com','2023-10-06 07:43:28'),
-                            ('test','테스트','$2a$10$tli5kNFPlkuxFxHcOTlLkusAJZXUBeVhoeMi0n.rM3snQkIze/vny','test@test.com','2023-10-06 07:44:11'),
-                            ('zzafy','싸피','$2a$10$tzHJA7.kjQonCBSsDC0/0O/pOsD/gV71DeTAkcg8nl.9S8Ud3EFSW','ssafy@ssafy.com','2023-10-06 07:43:47');
-
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서', '테스트 테스트', 5, '2023-10-01T02:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서2', '테스트 테스트', 10, '2023-10-02T02:41:05');
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서3', '테스트 테스트', 15, '2023-10-03T02:41:05');
@@ -90,25 +84,39 @@ CREATE TABLE `reply` (
     CONSTRAINT `reply_to_member_fk` foreign key(`userId`) REFERENCES `member`(`userId`)
 );
 
-INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('ssafy123', '해당 여행지 어떻게 가나요', '서울 경복궁 가려고 하는데요... 어떻게 가죠?');
-INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('test', '전주 한옥마을 맛집 알려주세요', '2023-11-11 ~ 11-13 전주 한옥마을 방문 예정인데요. 맛집 알려주세요!');
-INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES('zzafy', '서울 20반 Double JJ 화이팅', '화이팅');
+INSERT INTO `member` VALUES 
+	('ssafy', '지준호','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
+    ('ssafy123','최준호','$2a$10$6/Z/NgVi2c5vIGkbhve6xOJuUYvxInw4YGo5SXZDXAaqKj8DnWe9u','ajchoi0928@gmail.com','2023-10-06 07:42:42'),
+    ('taffy1234','김싸피','$2a$10$fQxtIPaG1aWQHMMUAdAUXO7z6M87rU39UD64L4qMwInHJhUFBem52','ssafy@ssafy.com','2023-10-06 07:43:28'),
+    ('test','테스트','$2a$10$tli5kNFPlkuxFxHcOTlLkusAJZXUBeVhoeMi0n.rM3snQkIze/vny','test@test.com','2023-10-06 07:44:11'),
+    ('zzafy','싸피','$2a$10$tzHJA7.kjQonCBSsDC0/0O/pOsD/gV71DeTAkcg8nl.9S8Ud3EFSW','ssafy@ssafy.com','2023-10-06 07:43:47');
+
+INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES
+	('ssafy', 'title1', 'content1'), ('ssafy123', 'title2', 'content2'), 
+    ('taffy1234', 'title3', 'content3'), ('test', 'title4', 'content4'),
+    ('zzafy', 'title5', 'content5'), ('ssafy', 'title6', 'content6'), 
+    ('ssafy123', 'title7', 'content7'), ('taffy1234', 'title8', 'content8'), 
+    ('test', 'title9', 'content9'), ('zzafy', 'title10', 'content10'),
+    
+    ('ssafy', 'title11', 'content11'), ('ssafy123', 'title12', 'content12'), 
+    ('taffy1234', 'title13', 'content13'), ('test', 'title14', 'content14'),
+    ('zzafy', 'title15', 'content15'), ('ssafy', 'title16', 'content16'), 
+    ('ssafy123', 'title17', 'content17'), ('taffy1234', 'title18', 'content18'), 
+    ('test', 'title19', 'content19'), ('zzafy', 'title20', 'content20'),
+    
+    ('ssafy', 'title21', 'content21'), ('ssafy123', 'title22', 'content22'), 
+    ('taffy1234', 'title23', 'content23'), ('test', 'title24', 'content24'),
+    ('zzafy', 'title25', 'content25'), ('ssafy', 'title26', 'content26'), 
+    ('ssafy123', 'title27', 'content27'), ('taffy1234', 'title28', 'content28'), 
+    ('test', 'title29', 'content29'), ('zzafy', 'title30', 'content30');
 	
 INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
-	("지도 앱을 여셔서 검색해보세요", 1, 'taffy1234'),
-	("정말 좋았어요2", 1, 'test'),
-    ("근데 배고파요", 1, 'test'),
-    ("감사합니다", 1, 'ssafy123'),
-    ("쭈노네 물갈비 어떠세요?", 2, 'taffy1234'),
-	("정말 좋았어요22", 2, 'ssafy123'),
-    ("근데 배고파요33", 2, 'ssafy123'),
-    ("감사합니다", 2, 'test');
-
-INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
-	("화이팅!!!", 3, 'ssafy'),
-    ("감사합니다", 2, 'test'),
-    ("화이팅!!!", 3, 'ssafy'),
-    ("화이팅!!!", 3, 'ssafy123');
+	("댓글 1-1", 1, 'ssafy'), ("댓글 1-2", 1, 'ssafy123'), ("댓글 1-3", 1, 'taffy1234'), ("댓글 1-4", 1, 'test'), ("댓글 1-5", 1, 'zzafy'),
+    ("댓글 1-6", 1, 'ssafy'), ("댓글 1-7", 1, 'ssafy123'), ("댓글 1-8", 1, 'taffy1234'), ("댓글 1-9", 1, 'test'), ("댓글 1-10", 1, 'zzafy'),
+	("댓글 2-1", 2, 'ssafy'), ("댓글 2-2", 2, 'ssafy123'), ("댓글 2-3", 2, 'taffy1234'), ("댓글 2-4", 2, 'test'), ("댓글 2-5", 2, 'zzafy'),
+    ("댓글 2-6", 2, 'ssafy'), ("댓글 2-7", 2, 'ssafy123'), ("댓글 2-8", 2, 'taffy1234'), ("댓글 2-9", 2, 'test'), ("댓글 2-10", 2, 'zzafy'),
+    ("댓글 3-1", 3, 'ssafy'), ("댓글 3-2", 3, 'ssafy123'), ("댓글 3-3", 3, 'taffy1234'), ("댓글 3-4", 3, 'test'), ("댓글 3-5", 3, 'zzafy'),
+    ("댓글 3-6", 3, 'ssafy'), ("댓글 3-7", 3, 'ssafy123'), ("댓글 3-8", 3, 'taffy1234'), ("댓글 3-9", 3, 'test'), ("댓글 3-10", 3, 'zzafy');
 
 select * from member;
 select * from board_qna;
