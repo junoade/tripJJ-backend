@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.HotplaceDto;
+import com.trip.attraction.SearchConditionDto;
 import com.trip.attraction.dao.AttractionDao;
 
 @Service
@@ -17,13 +18,8 @@ public class AttractionServiceImpl implements AttractionService{
     private AttractionDao dao;
     
     @Override
-    public List<AttractionInfoDto> attractionList(AttractionInfoDto attractionInfoDto) {
-        return dao.attractionList(attractionInfoDto);
-    }
-
-    @Override
-    public List<AttractionInfoDto> searchByTitle(String title, int sidoCode) {
-        return dao.searchByTitle(title, sidoCode);
+    public List<AttractionInfoDto> attractionList(SearchConditionDto searchConditionDto) {
+        return dao.attractionList(searchConditionDto);
     }
     
     @Override

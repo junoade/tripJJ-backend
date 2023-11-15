@@ -5,12 +5,11 @@ import java.util.List;
 
 import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.HotplaceDto;
+import com.trip.attraction.SearchConditionDto;
 
 public interface AttractionService {
 
-	List<AttractionInfoDto> attractionList(AttractionInfoDto attractionInfoDto);
-
-	List<AttractionInfoDto> searchByTitle(String title, int sidoCode);
+	List<AttractionInfoDto> attractionList(SearchConditionDto searchConditionDto);
 	
 	int saveHotplace(HotplaceDto dto);
 	
