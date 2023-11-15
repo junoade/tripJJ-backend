@@ -44,16 +44,6 @@ CREATE TABLE HOTPLACE (
 -- select * from board;
 -- select * from hotplace;
 
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서', '테스트 테스트', 5, '2023-10-01T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서2', '테스트 테스트', 10, '2023-10-02T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서3', '테스트 테스트', 15, '2023-10-03T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서4', '테스트 테스트', 20, '2023-10-04T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서5', '테스트 테스트', 25, '2023-10-05T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서6', '테스트 테스트', 25, '2023-10-05T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('zzafy', 'TEST 투어 제안서7', '테스트 테스트', 25, '2023-10-05T05:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서8', '테스트 테스트', 25, '2023-10-05T06:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
-
 -- #1110 #Q&A 게시판 테이블 추가
 CREATE TABLE `board_qna` (
                          `articleNo` int NOT NULL AUTO_INCREMENT,
@@ -90,6 +80,16 @@ INSERT INTO `member` VALUES
     ('taffy1234','김싸피','$2a$10$fQxtIPaG1aWQHMMUAdAUXO7z6M87rU39UD64L4qMwInHJhUFBem52','ssafy@ssafy.com','2023-10-06 07:43:28'),
     ('test','테스트','$2a$10$tli5kNFPlkuxFxHcOTlLkusAJZXUBeVhoeMi0n.rM3snQkIze/vny','test@test.com','2023-10-06 07:44:11'),
     ('zzafy','싸피','$2a$10$tzHJA7.kjQonCBSsDC0/0O/pOsD/gV71DeTAkcg8nl.9S8Ud3EFSW','ssafy@ssafy.com','2023-10-06 07:43:47');
+
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서', '테스트 테스트', 5, '2023-10-01T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서2', '테스트 테스트', 10, '2023-10-02T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서3', '테스트 테스트', 15, '2023-10-03T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서4', '테스트 테스트', 20, '2023-10-04T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서5', '테스트 테스트', 25, '2023-10-05T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서6', '테스트 테스트', 25, '2023-10-05T02:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('zzafy', 'TEST 투어 제안서7', '테스트 테스트', 25, '2023-10-05T05:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서8', '테스트 테스트', 25, '2023-10-05T06:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
 
 INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES
 	('ssafy', 'title1', 'content1'), ('ssafy123', 'title2', 'content2'), 

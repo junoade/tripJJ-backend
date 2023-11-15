@@ -2,13 +2,13 @@ package com.trip.attraction.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.HotplaceDto;
-import com.trip.attraction.SearchConditionDto;
 import com.trip.attraction.dao.AttractionDao;
 
 @Service
@@ -18,8 +18,8 @@ public class AttractionServiceImpl implements AttractionService{
     private AttractionDao dao;
     
     @Override
-    public List<AttractionInfoDto> attractionList(SearchConditionDto searchConditionDto) {
-        return dao.attractionList(searchConditionDto);
+    public List<AttractionInfoDto> listAttraction(Map<String, String> param) throws SQLException {
+        return dao.listAttraction(param);
     }
     
     @Override

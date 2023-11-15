@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,22 +34,16 @@ public class RestAttractionController {
 	@Autowired
 	private SidoGugunService searchService;
 	
-//	GetMapping에는 @RequestBody 불가!!!
-//	@GetMapping("/search")
-//	public ResponseEntity<?> listAttractions(SearchConditionDto searchConditionDto){
-//		log.debug("[RestAttractionController]: /attraction/search with searchConditionDto = {}", searchConditionDto);
-//		return new ResponseEntity<List<AttractionInfoDto>>(service.attractionList(searchConditionDto), HttpStatus.OK);
-////		return new ResponseEntity<>(1, HttpStatus.OK);
-//	}
-	
 	@GetMapping("/search")
-	public ResponseEntity<?> listAttractions(@RequestParam SearchConditionDto searchConditionDto){
-		log.debug("[RestAttractionController]: /attraction/search with searchConditionDto = {}", searchConditionDto);
+	public ResponseEntity<?> listAttractions(@RequestParam Map<String, String> param){
+		log.debug("[RestAttractionController]: /attraction/search with searchConditionDto = {}", param);
 		try {
-			List<AttractionInfoDto> list = service.attractionList(searchConditionDto);
-			
+			List<AttractionInfoDto> list = service.listAttraction(param);
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			
+			Map<String, Object> result = new HashMap();
+			result.put("attractions", list);
 			return ResponseEntity.ok().headers(header).body(list);
 		} catch(Exception e) {
 			return exceptionHandling(e);
