@@ -35,7 +35,7 @@ public class RestAttractionController {
 	private SidoGugunService searchService;
 	
 	@GetMapping("/search")
-	public ResponseEntity<?> listAttractions(@RequestParam Map<String, String> param){
+	public ResponseEntity<?> listAttractions(@RequestParam Map<String, Object> param){
 		log.debug("[RestAttractionController]: /attraction/search with searchConditionDto = {}", param);
 		try {
 			List<AttractionInfoDto> list = service.listAttraction(param);
@@ -44,7 +44,7 @@ public class RestAttractionController {
 			
 			Map<String, Object> result = new HashMap();
 			result.put("attractions", list);
-			return ResponseEntity.ok().headers(header).body(list);
+			return ResponseEntity.ok().headers(header).body(result);
 		} catch(Exception e) {
 			return exceptionHandling(e);
 		}

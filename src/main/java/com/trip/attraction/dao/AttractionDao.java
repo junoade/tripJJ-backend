@@ -12,7 +12,7 @@ import com.trip.attraction.SearchConditionDto;
 @Mapper
 public interface AttractionDao {
 
-	List<AttractionInfoDto> listAttraction(Map<String, String> param) throws SQLException;
+	List<AttractionInfoDto> listAttraction(Map<String, Object> param) throws SQLException;
 	
 	List<HotplaceDto> hotPlaceList(String userId);
 	

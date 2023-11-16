@@ -10,7 +10,7 @@ import com.trip.attraction.SearchConditionDto;
 
 public interface AttractionService {
 
-	List<AttractionInfoDto> listAttraction(Map<String, String> param) throws SQLException;
+	List<AttractionInfoDto> listAttraction(Map<String, Object> param) throws SQLException;
 	
 	int saveHotplace(HotplaceDto dto);
 	
