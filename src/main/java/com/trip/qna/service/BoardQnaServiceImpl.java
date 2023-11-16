@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.trip.qna.BoardQnaDto;
 import com.trip.qna.BoardQnaPagingList;
+import com.trip.qna.ReplyDto;
 import com.trip.qna.dao.BoardQnaDao;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,11 @@ public class BoardQnaServiceImpl implements BoardQnaService {
 	@Override
 	public int writeQna(BoardQnaDto boardQnaDto) throws SQLException {
 		return dao.writeQna(boardQnaDto);
+	}
+	
+	@Override
+	public int writeReply(ReplyDto reply) throws SQLException {
+		return dao.writeReply(reply);
 	}
 	
 	@Override
@@ -50,12 +56,22 @@ public class BoardQnaServiceImpl implements BoardQnaService {
 
 		return boardQnaPagingList;
 	}
+	
+	@Override
+	public List<ReplyDto> listReply(int articleNo) throws SQLException {
+		return dao.listReply(articleNo);
+	}
 
 	@Override
 	public BoardQnaDto getQna(int articleNo) throws SQLException {
 		return dao.getQna(articleNo);
 	}
 
+	@Override
+	public ReplyDto getReply(int replyNo) throws SQLException {
+		return dao.getReply(replyNo);
+	}
+	
 	@Override
 	public void updateHit(int articleNo) throws SQLException {
 		dao.updateHit(articleNo);
@@ -65,12 +81,21 @@ public class BoardQnaServiceImpl implements BoardQnaService {
 	@Override
 	public void modifyQna(BoardQnaDto boardQnaDto) throws SQLException {
 		dao.modifyQna(boardQnaDto);
-
+	}
+	
+	@Override
+	public void modifyReply(ReplyDto Reply) throws SQLException {
+		dao.modifyReply(Reply);
 	}
 
 	@Override
 	public void deleteQna(int articleNo) throws SQLException {
 		dao.deleteQna(articleNo);
+	}
+	
+	@Override
+	public void deleteReply(int replyNo) throws SQLException {
+		dao.deleteReply(replyNo);
 	}
 
 }

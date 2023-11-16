@@ -1,8 +1,7 @@
-	package com.trip.qna;
+package com.trip.qna;
 
 import lombok.*;
-
-import java.lang.reflect.Member;
+import java.util.List;
 
 @Setter
 @Getter
@@ -17,5 +16,6 @@ public class BoardQnaDto {
 	private String content;
 	private int hit;
 	private String publishedDate;
+	private List<ReplyDto> replies;
 	
 }
