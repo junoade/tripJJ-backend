@@ -20,10 +20,9 @@ public class AuthenticationConfig {
 
 	private static final String AUTH_URL_LOGIN = "/v1/auth/login";
 	private static final String MEMBER_URL_JOIN = "";
-
-	@Value("${jwt.secret}")
-	private String jwtSecret;
-
+	
+	private final JwtFilter jwtFilter; // 스프링 컨테이너가 관리하는 JwtFilter 빈 주입
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		// httpSecurity 설정 start
@@ -46,7 +45,10 @@ public class AuthenticationConfig {
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-				.addFilterBefore(new JwtFilter(jwtSecret), UsernamePasswordAuthenticationFilter.class)
+				// AS IS 
+				.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
+				// TO BE 
+				// .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 				
 	}

@@ -48,11 +48,13 @@ public class JwtUtil {
     private String createJwt(String userId, String subject, Long expiredMillis) {
 		// Payload 설정
         Claims claims = Jwts.claims();
-		// 생성일 (IssuedAt), 유효기간 (Expiration), 토큰 제목 (Subject), 데이터 (Claim) 등 정보 세팅
+		log.debug("claims created; {}", claims);
+        
+        // 생성일 (IssuedAt), 유효기간 (Expiration), 토큰 제목 (Subject), 데이터 (Claim) 등 정보 세팅
         claims.setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiredMillis));
-
+          
 		// 저장할 data의 key, value
         claims.put("userId", userId);
 
@@ -75,15 +77,30 @@ public class JwtUtil {
      * @param token
      * @return
      */
+//    public boolean checkToken(String token) {
+//        // JWS(Json Web Signature)를 통해 전달받은 JWT의 서명부 확인; 서버의 private key로 서명했나?
+//        // Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token);
+//        // Jws<Claims> claims = Jwts.parser().setSigningKey(key()).parseClaimsJws(token);
+//        try {
+//            Jws<Claims> claims = Jwts.parserBuilder()
+//                    .requireAudience("string")
+//                    .setSigningKey(key())
+//                    .build()
+//                    .parseClaimsJws(token);
+//            log.debug("checkToken called; claims: {}", claims);
+//            return true;
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            return false;
+//        }
+//    }
     public boolean checkToken(String token) {
         // JWS(Json Web Signature)를 통해 전달받은 JWT의 서명부 확인; 서버의 private key로 서명했나?
         // Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token);
         // Jws<Claims> claims = Jwts.parser().setSigningKey(key()).parseClaimsJws(token);
         try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                    .requireAudience("string")
-                    .setSigningKey(key())
-                    .build()
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(key())                
                     .parseClaimsJws(token);
             log.debug("checkToken called; claims: {}", claims);
             return true;
@@ -91,6 +108,17 @@ public class JwtUtil {
             log.error(e.getMessage());
             return false;
         }
+    }
+    
+    public boolean isExpired(String token) {
+    	return Jwts.parserBuilder()
+    			.requireAudience("string")
+    			.setSigningKey(key())
+    			.build()
+    			.parseClaimsJws(token)
+    			.getBody()
+    			.getExpiration()
+    			.before(new Date());
     }
 
     public String getUserId(String authorization) {

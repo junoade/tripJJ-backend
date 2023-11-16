@@ -21,10 +21,17 @@ import java.util.Map;
 @RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
+	
     private final MemberService memberService;
     private final JwtUtil jwtUtil;
+    
 
+    /**
+     * 필터 / 인터셉터로 먼저 header에 Authorization있나 검사하고 호출하게 됨!
+     * @param map
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody Map<String, Object> map) throws Exception {
         log.debug(map.get("id").toString());
@@ -44,7 +51,7 @@ public class AuthController {
             log.debug("doLogin(); refresh token: {}", refreshToken);
 
             // 발급받은 refresh Token DB 저장
-            // TODO
+            memberService.saveRefreshToken(hasFound.getUserId(), refreshToken);
 
             // JSON으로 토큰 전달
             resultMap.put("access-token", accessToken);
