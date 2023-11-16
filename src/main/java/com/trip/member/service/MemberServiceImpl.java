@@ -1,5 +1,9 @@
 package com.trip.member.service;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,4 +55,24 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.deleteMember(userId);
 	}
 
+	@Override
+	public int saveRefreshToken(String userId, String refreshToken) throws SQLException {
+		Map<String, String> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("refreshToken", refreshToken);
+		return memberDao.saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(String userId) throws SQLException {
+		return memberDao.getRefreshToken(userId);
+	}
+
+	@Override
+	public int deleteRefreshToken(String userId) throws SQLException {
+		Map<String, String> map = new HashMap<>();
+		map.put(userId, null);
+		return memberDao.deleteRefreshToken(map);
+	}
+	
 }
