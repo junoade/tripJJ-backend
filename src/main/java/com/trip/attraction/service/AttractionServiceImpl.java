@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trip.attraction.AttractionInfoDto;
+import com.trip.attraction.AttractionInfoPagingList;
 import com.trip.attraction.HotplaceDto;
 import com.trip.attraction.dao.AttractionDao;
 
@@ -19,19 +20,33 @@ public class AttractionServiceImpl implements AttractionService{
     private AttractionDao dao;
     
     @Override
-    public List<AttractionInfoDto> listAttraction(Map<String, Object> param) throws SQLException {
-//    	Map<String, Object> map = new HashMap();
-//    	String sidoCode = (String)param.getOrDefault("sidoCode", "");
-//    	String gugunCode = (String)param.getOrDefault("gugunCode", "");
-//    	String contentTypeId = (String)param.getOrDefault("contentTypeId", "");
-//    	String title = (String)param.getOrDefault("title", "");
-//    	
-//    	map.put("sidoCode", sidoCode);
-//    	map.put("gugunCode", gugunCode);
-//    	map.put("contentTypeId", contentTypeId);
-//    	map.put("title", title);
+    public AttractionInfoPagingList listAttraction(Map<String, Object> param) throws SQLException {
+    	Map<String, Object> map = new HashMap();
+    	String sidoCode = (String)param.getOrDefault("sidoCode", "");
+    	String gugunCode = (String)param.getOrDefault("gugunCode", "");
+    	String contentTypeId = (String)param.getOrDefault("contentTypeId", "");
+    	String title = (String)param.getOrDefault("title", "");
+    	int currentPage = Integer.parseInt((String) param.getOrDefault("pgno", "1"));
+		int sizePerPage = Integer.parseInt((String) param.getOrDefault("spp", "10"));
+		int start = currentPage * sizePerPage - sizePerPage;
     	
-        return dao.listAttraction(param);
+    	map.put("sidoCode", sidoCode);
+    	map.put("gugunCode", gugunCode);
+    	map.put("contentTypeId", contentTypeId);
+    	map.put("title", title);
+    	map.put("start", start);
+    	map.put("listsize",sizePerPage);
+    	
+    	List<AttractionInfoDto> attractions = dao.listAttraction(map);
+        int totalAttractionCount = dao.getTotalAttractionCount(param);
+        int	totalPageCount = (totalAttractionCount - 1) / sizePerPage + 1;
+        
+        AttractionInfoPagingList attractionInfoPagingList = new AttractionInfoPagingList();
+        attractionInfoPagingList.setAttractions(attractions);
+        attractionInfoPagingList.setTotalPage(totalPageCount);
+        attractionInfoPagingList.setCurrentPage(currentPage);
+        
+        return attractionInfoPagingList;
     }
     
     @Override

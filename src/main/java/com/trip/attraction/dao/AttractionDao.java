@@ -12,13 +12,16 @@ import com.trip.attraction.SearchConditionDto;
 @Mapper
 public interface AttractionDao {
 
+//	조회
 	List<AttractionInfoDto> listAttraction(Map<String, Object> param) throws SQLException;
+	int getTotalAttractionCount(Map<String, Object> param) throws SQLException;
 	
 	List<HotplaceDto> hotPlaceList(String userId);
+	HotplaceDto select(int placeNo) throws SQLException;
 	
+//	등록
 	int saveHotplace(HotplaceDto dto);
 
+//	삭제
 	int deleteHotPlace(int placeNo);
-
-	HotplaceDto select(int placeNo) throws SQLException;
 }

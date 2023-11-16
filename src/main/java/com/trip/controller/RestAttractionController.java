@@ -1,6 +1,7 @@
 package com.trip.controller;
 
 import com.trip.attraction.AttractionInfoDto;
+import com.trip.attraction.AttractionInfoPagingList;
 import com.trip.attraction.HotplaceDto;
 import com.trip.attraction.SearchConditionDto;
 import com.trip.attraction.SidoGugunDto;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/attraction")
 public class RestAttractionController {
 	
@@ -38,12 +40,19 @@ public class RestAttractionController {
 	public ResponseEntity<?> listAttractions(@RequestParam Map<String, Object> param){
 		log.debug("[RestAttractionController]: /attraction/search with searchConditionDto = {}", param);
 		try {
-			List<AttractionInfoDto> list = service.listAttraction(param);
+//			관광지 리스트, 현재 페이지, 전체 페이지 수 받아오기
+			AttractionInfoPagingList attractionInfoPagingList = service.listAttraction(param);
+			
+//			반환할 HTTP의 헤더 설정
 			HttpHeaders header = new HttpHeaders();
 			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 			
+//			바디 설정
 			Map<String, Object> result = new HashMap();
-			result.put("attractions", list);
+			result.put("attractions", attractionInfoPagingList.getAttractions());
+			result.put("currentPage", attractionInfoPagingList.getCurrentPage());
+			result.put("totalPageCount", attractionInfoPagingList.getTotalPage());
+			
 			return ResponseEntity.ok().headers(header).body(result);
 		} catch(Exception e) {
 			return exceptionHandling(e);

@@ -15,5 +15,9 @@ public class AttractionInfoDto {
 	private String addr1;
 	private String addr2;
 	private String firstImage;
+	
+//	위치
+	private double latitude;
+	private double longitude;
 
 }

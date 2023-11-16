@@ -32,7 +32,15 @@
 		<where>
 			<include refid="search"></include>
 		</where>
-		LIMIT 10
+		ORDER BY content_id
+		LIMIT #{start}, #{listsize}
+	</select>
+	
+	<select id="getTotalAttractionCount" parameterType="map" resultType="int">
+		SELECT COUNT(content_id) FROM attraction_info
+		<where>
+			<include refid="search"></include>
+		</where>
 	</select>
 	
 	<insert id="saveHotplace" parameterType="HotplaceDto">
