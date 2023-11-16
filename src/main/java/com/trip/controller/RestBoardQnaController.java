@@ -22,7 +22,6 @@ import com.trip.qna.BoardQnaDto;
 import com.trip.qna.BoardQnaPagingList;
 import com.trip.qna.ReplyDto;
 import com.trip.qna.service.BoardQnaServiceImpl;
-import com.trip.qna.service.ReplyServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -36,17 +35,14 @@ public class RestBoardQnaController {
 	@Autowired
 	private BoardQnaServiceImpl bs;
 	
-	@Autowired
-	private ReplyServiceImpl rs;
-	
 //	QNA 등록
 	@PostMapping("/write")
 	public ResponseEntity<?> registerQna(@RequestBody BoardQnaDto boardQnaDto) {
 		log.debug("게시글 작성 : " + boardQnaDto.toString());
 		try {
 			int result = bs.writeQna(boardQnaDto);
-			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
-//			return new ResponseEntity<Void>(HttpStatus.CREATED);
+			if(result!=1) return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+			return new ResponseEntity<Integer>(boardQnaDto.getArticleNo(), HttpStatus.CREATED);
 		} catch(Exception e) {
 			return exceptionHandling(e);
 		}
@@ -76,7 +72,6 @@ public class RestBoardQnaController {
 		
 		final Map<String, Object> map = new HashMap<String, Object>();
 		map.put("article", bs.getQna(articleNo));
-		map.put("replies", rs.listReply(articleNo));
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
@@ -112,7 +107,7 @@ public class RestBoardQnaController {
 	public ResponseEntity<?> registerReply(@RequestBody ReplyDto replyDto) {
 		log.debug("댓글 작성 : " + replyDto.toString());
 		try {
-			int result = rs.registerReply(replyDto);
+			int result = bs.writeReply(replyDto);
 			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
 //			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch(Exception e) {
@@ -126,7 +121,7 @@ public class RestBoardQnaController {
 			@PathVariable("replyno") @ApiParam(value = "얻어올 댓글번호.", required = true) int replyno)
 			throws Exception {
 		log.info("getModifyReply - 호출 : " + replyno);
-		return new ResponseEntity<ReplyDto>(rs.getReply(replyno), HttpStatus.OK);
+		return new ResponseEntity<ReplyDto>(bs.getReply(replyno), HttpStatus.OK);
 	}
 	
 //	댓글 수정
@@ -135,7 +130,7 @@ public class RestBoardQnaController {
 	public ResponseEntity<String> modifyReply(
 			@RequestBody @ApiParam(value = "수정할 댓글정보.", required = true) ReplyDto replyDto) throws Exception {
 		log.info("modifyReply - 호출 {}", replyDto);
-		rs.modifyReply(replyDto);
+		bs.modifyReply(replyDto);
 		return ResponseEntity.ok().build();
 	}
 	
@@ -143,7 +138,7 @@ public class RestBoardQnaController {
 	@DeleteMapping("/reply/{replyNo}")
 	public ResponseEntity<?> deleteReply(@PathVariable int replyNo) throws SQLException {
 		log.debug("댓글 삭제 : ", replyNo);
-		rs.deleteReply(replyNo);
+		bs.deleteReply(replyNo);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
