@@ -35,54 +35,28 @@ import java.util.List;
 // 필터 방식
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private MemberService memberService;
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-      
-    @Autowired
-    public JwtFilter(MemberService memberService, JwtUtil jwtUtil) {
-    	this.memberService = memberService;
-    	this.jwtUtil = jwtUtil;
-    }
-    
-    public JwtFilter() {}
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("authorization : {}", authorization);
-
-        if(authorization == null || !authorization.startsWith("Bearer")) {
-            log.error("authorization is not valid");
-            filterChain.doFilter(request, response);
-            return;
+    	final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+    	
+        if(!validateAuthroization(authorization, request, response, filterChain)) {
+        	return; 
         }
-
-        // Token에서 username 꺼내기
+        
         String token = authorization.split(" ")[1];
-        log.debug(token);
-        // Token Expired 여부 확인
-//        if(jwtUtil.isExpired(token)) {
-//        	log.error("token has been expired");
-//        	filterChain.doFilter(request, response);
-//        	return;
-//        }
         
-        if(isExpired(token)) {
-        	// throw new UnAuthroizedException();
-        	log.error("authorization is not valid");
-            filterChain.doFilter(request, response);
-            return;
-        }
+        validateTokenFormat(token, request, response, filterChain);
+        validateTokenExpiration(token, request, response, filterChain);
         
+        // Token body에서 username 꺼내기
         String userName = "";
 
-        // 권한 부여
+        // 유효한 권한 유저 관련 정보 설정
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userName, null, Collections.singletonList(new SimpleGrantedAuthority("USER")));
 
@@ -93,16 +67,32 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
     
-    private boolean isExpired(String token) {
-        return Jwts.parser()
-        		.setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode("=============doublejj=security=code=============")))
-        		.parseClaimsJws(token)
-        		.getBody()
-        		.getExpiration()
-        		.before(new Date());
+    private boolean validateAuthroization(String authorization, HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    	log.debug("authorization : {}", authorization);
+
+        if(authorization == null || !authorization.startsWith("Bearer")) {
+            log.error("authorization is not valid");
+            filterChain.doFilter(request, response);
+            return false;
+        }
+        
+        return true;
     }
     
-    private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    private void validateTokenFormat(String token, HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    	if(!jwtUtil.checkTokenFormat(token)) {
+    		throw new UnAuthroizedException();
+    	}
     }
+    
+    private void validateTokenExpiration(String token, HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.debug(token);
+        
+        // Token Expired 여부 확인
+        if(jwtUtil.isExpired(token)) {
+        	log.error("authorization has been expired");
+        	throw new UnAuthroizedException();
+        }
+    }
+  
 }

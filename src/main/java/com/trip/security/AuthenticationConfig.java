@@ -39,16 +39,17 @@ public class AuthenticationConfig {
 				.antMatchers(AUTH_URL_LOGIN).permitAll()
 				// .antMatchers("/").permitAll()
 				// .antMatchers(HttpMethod.GET, )
-				.antMatchers("/qna/**").authenticated()
+				//.antMatchers("/qna/**").authenticated()
+				.antMatchers("**").permitAll()
 				.and()
 				// session 관련
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				// AS IS 
-				.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
-				// TO BE 
-				// .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+				// .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
+				// TO BE; 스프링 빈 활용!!
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 				
 	}
