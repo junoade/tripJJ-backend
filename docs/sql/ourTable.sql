@@ -11,6 +11,7 @@ CREATE TABLE `member` (
                           `userName` varchar(20) NOT NULL,
                           `userPass` varchar(100) NOT NULL,
                           `userEmail` varchar(50) NOT NULL,
+                          `refreshToken` varchar(256),
                           `joinDate` timestamp NULL DEFAULT current_timestamp,
                           PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs;
@@ -61,20 +62,20 @@ CREATE TABLE `reply` (
 	`replyNo` int NOT NULL auto_increment,
 	`comment` varchar(2000) NOT NULL,
 	`publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    
+
     `articleNo` int NOT NULL,
     `userId` varchar(16) NOT NULL,
-    
+
     PRIMARY KEY(`replyNo`),
-    
+
     KEY `reply_to_board_qna_fk`(`articleNo`),
     CONSTRAINT `reply_to_board_qna_fk` foreign key(`articleNo`) REFERENCES `board_qna`(`articleNo`),
-    
+
     KEY  `reply_to_member_fk`(`userId`),
     CONSTRAINT `reply_to_member_fk` foreign key(`userId`) REFERENCES `member`(`userId`)
 );
 
-INSERT INTO `member` VALUES 
+INSERT INTO `member`(userId, userName, userPass, userEmail, joinDate) VALUES
 	('ssafy', '지준호','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
     ('ssafy123','최준호','$2a$10$6/Z/NgVi2c5vIGkbhve6xOJuUYvxInw4YGo5SXZDXAaqKj8DnWe9u','ajchoi0928@gmail.com','2023-10-06 07:42:42'),
     ('taffy1234','김싸피','$2a$10$fQxtIPaG1aWQHMMUAdAUXO7z6M87rU39UD64L4qMwInHJhUFBem52','ssafy@ssafy.com','2023-10-06 07:43:28'),
@@ -92,25 +93,25 @@ INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES (
 INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
 
 INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES
-	('ssafy', 'title1', 'content1'), ('ssafy123', 'title2', 'content2'), 
+	('ssafy', 'title1', 'content1'), ('ssafy123', 'title2', 'content2'),
     ('taffy1234', 'title3', 'content3'), ('test', 'title4', 'content4'),
-    ('zzafy', 'title5', 'content5'), ('ssafy', 'title6', 'content6'), 
-    ('ssafy123', 'title7', 'content7'), ('taffy1234', 'title8', 'content8'), 
+    ('zzafy', 'title5', 'content5'), ('ssafy', 'title6', 'content6'),
+    ('ssafy123', 'title7', 'content7'), ('taffy1234', 'title8', 'content8'),
     ('test', 'title9', 'content9'), ('zzafy', 'title10', 'content10'),
-    
-    ('ssafy', 'title11', 'content11'), ('ssafy123', 'title12', 'content12'), 
+
+    ('ssafy', 'title11', 'content11'), ('ssafy123', 'title12', 'content12'),
     ('taffy1234', 'title13', 'content13'), ('test', 'title14', 'content14'),
-    ('zzafy', 'title15', 'content15'), ('ssafy', 'title16', 'content16'), 
-    ('ssafy123', 'title17', 'content17'), ('taffy1234', 'title18', 'content18'), 
+    ('zzafy', 'title15', 'content15'), ('ssafy', 'title16', 'content16'),
+    ('ssafy123', 'title17', 'content17'), ('taffy1234', 'title18', 'content18'),
     ('test', 'title19', 'content19'), ('zzafy', 'title20', 'content20'),
-    
-    ('ssafy', 'title21', 'content21'), ('ssafy123', 'title22', 'content22'), 
+
+    ('ssafy', 'title21', 'content21'), ('ssafy123', 'title22', 'content22'),
     ('taffy1234', 'title23', 'content23'), ('test', 'title24', 'content24'),
-    ('zzafy', 'title25', 'content25'), ('ssafy', 'title26', 'content26'), 
-    ('ssafy123', 'title27', 'content27'), ('taffy1234', 'title28', 'content28'), 
+    ('zzafy', 'title25', 'content25'), ('ssafy', 'title26', 'content26'),
+    ('ssafy123', 'title27', 'content27'), ('taffy1234', 'title28', 'content28'),
     ('test', 'title29', 'content29'), ('zzafy', 'title30', 'content30');
-	
-INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES 
+
+INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES
 	("댓글 1-1", 1, 'ssafy'), ("댓글 1-2", 1, 'ssafy123'), ("댓글 1-3", 1, 'taffy1234'), ("댓글 1-4", 1, 'test'), ("댓글 1-5", 1, 'zzafy'),
     ("댓글 1-6", 1, 'ssafy'), ("댓글 1-7", 1, 'ssafy123'), ("댓글 1-8", 1, 'taffy1234'), ("댓글 1-9", 1, 'test'), ("댓글 1-10", 1, 'zzafy'),
 	("댓글 2-1", 2, 'ssafy'), ("댓글 2-2", 2, 'ssafy123'), ("댓글 2-3", 2, 'taffy1234'), ("댓글 2-4", 2, 'test'), ("댓글 2-5", 2, 'zzafy'),
