@@ -1,18 +1,9 @@
 package com.trip.security.jwt;
 
-import com.trip.member.service.MemberService;
 import com.trip.security.exception.UnAuthroizedException;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,10 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Key;
 import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 
 // 필터 방식
@@ -44,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     	final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
     	
-        if(!validateAuthroization(authorization, request, response, filterChain)) {
+        if(!validateAuthorization(authorization, request, response, filterChain)) {
         	return; 
         }
         
@@ -67,7 +55,7 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
     
-    private boolean validateAuthroization(String authorization, HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    private boolean validateAuthorization(String authorization, HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     	log.debug("authorization : {}", authorization);
 
         if(authorization == null || !authorization.startsWith("Bearer")) {
