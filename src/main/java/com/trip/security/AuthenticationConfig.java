@@ -18,8 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor // 생성자 하나, Autowired 생략 가능
 public class AuthenticationConfig {
 
-	private static final String AUTH_URL_LOGIN = "/v1/auth/login";
-	private static final String MEMBER_URL_JOIN = "";
+	private static final String MEMBER_LOGIN_URL = "/member/login";
+	private static final String MEMBER_JOIN_URL = "/member/join";
 	
 	private final JwtFilter jwtFilter; // 스프링 컨테이너가 관리하는 JwtFilter 빈 주입
 	
@@ -36,11 +36,11 @@ public class AuthenticationConfig {
 				.csrf().disable()
 				.cors().and()
 				.authorizeRequests()
-				.antMatchers(AUTH_URL_LOGIN).permitAll()
+				.antMatchers(MEMBER_LOGIN_URL, MEMBER_JOIN_URL).permitAll()
 				// .antMatchers("/").permitAll()
 				// .antMatchers(HttpMethod.GET, )
-				//.antMatchers("/qna/**").authenticated()
-				.antMatchers("**").permitAll()
+				.antMatchers("**").authenticated()
+				// .antMatchers("**").permitAll()
 				.and()
 				// session 관련
 				.sessionManagement()

@@ -3,6 +3,7 @@ package com.trip.member.service;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int deleteMember(String userId) {
 		return memberDao.deleteMember(userId);
+	}
+
+	@Override
+	public Optional<MemberDto> findByUserId(String userId) throws SQLException {
+		return memberDao.selectUser(userId);
 	}
 
 	@Override

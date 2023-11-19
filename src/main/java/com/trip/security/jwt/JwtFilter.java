@@ -38,11 +38,12 @@ public class JwtFilter extends OncePerRequestFilter {
         
         String token = authorization.split(" ")[1];
         
-        validateTokenFormat(token, request, response, filterChain);
+//        validateTokenFormat(token, request, response, filterChain);
         validateTokenExpiration(token, request, response, filterChain);
         
         // Token body에서 username 꺼내기
-        String userName = "";
+        String userName = jwtUtil.getUserId(token);
+        log.debug("userName : {}", userName);
 
         // 유효한 권한 유저 관련 정보 설정
         UsernamePasswordAuthenticationToken authenticationToken =
