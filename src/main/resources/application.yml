@@ -28,7 +28,8 @@ jwt:
     secret: =============doublejj=security=code=============
     access-token:
         # 1 hour
-        expirationMillis: 3600000
+        expirationMillis: 43200000
+#        expirationMillis: 3600000
         # expirationMillis: 60000
     refresh-token:
         # 30 days
