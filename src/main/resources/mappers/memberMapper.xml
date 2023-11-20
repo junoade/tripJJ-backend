@@ -34,5 +34,30 @@
 		DELETE FROM member
 		WHERE userId=#{userId};
 	</delete>
+
+
+	<select id="selectUser" resultType="MemberDto">
+		SELECT *
+		FROM member
+		WHERE userId = #{userId};
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		UPDATE member
+		SET refreshToken = #{refreshToken}
+		WHERE userId = #{userId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		SELECT refreshToken
+		FROM member
+		WHERE user_id = #{userId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update member
+		SET refreshToken = #{token, jdbcType=VARCHAR}
+		WHERE userId = #{userId}
+	</update>
 	
 </mapper>

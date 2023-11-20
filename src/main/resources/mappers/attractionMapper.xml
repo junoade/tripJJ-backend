@@ -2,26 +2,75 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.attraction.dao.AttractionDao">
 	
-	<select id="attractionList" parameterType="AttractionInfoDto" resultType="AttractionInfoDto">
-		SELECT * FROM atraction_info;
-		<if test="sidoCode!=0">
-			WHERE sido_code = #sidoCode
-			<if test="contentTypeId!=0">
-				AND content_type_id = #contentTypeId
-			</if>
+	<resultMap type="AttractionInfoDto" id="attractionInfo">
+		<result column="content_id" property="contentId"/>
+		<result column="content_type_id" property="contentTypeId"/>
+		<result column="title" property="title"/>
+		<result column="addr1" property="addr1"/>
+		<result column="addr2" property="addr2"/>
+		<result column="first_image" property="firstImage"/>
+	</resultMap>
+	
+	<!-- 검색 조건문 -->
+	<sql id="search">
+		<if test="sidoCode!='' and sidoCode!=null">
+			ai.sido_code = #{sidoCode}
 		</if>
-		<if test="sidoCode==0 and contentTypeId!=0">
-			WHERE content_type_id = #contentTypeId
+		<if test="gugunCode!='' and gugunCode!=null">
+			ai.gugun_code = #{gugunCode}
 		</if>
+		<if test="contentTypeId!='' and contentTypeId!=null">
+			ai.content_type_id = #{contentTypeId}
+		</if>
+		<if test="title!='' and title!=null">
+			ai.title LIKE CONCAT('%', #{title}, '%')
+		</if>
+	</sql>
+	
+	<select id="listAttraction" parameterType="map" resultType="AttractionInfoDto">
+		SELECT
+			ai.content_id 'contentId', ai.content_type_id 'contentTypeId', ai.title 'title', 
+			ai.addr1 'addr1', ai.addr2 'addr2', ai.first_image 'firstImage', ad.overview 'overview',
+			ai.latitude 'latitude', ai.longitude 'longitude'
+		FROM attraction_info ai
+		LEFT OUTER JOIN attraction_description ad
+		ON ai.content_id=ad.content_id
+		<where>
+			<include refid="search"></include>
+		</where>
+		ORDER BY ai.content_id
+		LIMIT #{start}, #{listsize}
 	</select>
 	
-	<select id="searchByTitle" parameterType="map" resultType="AttractionInfoDto">
-		SELECT * FROM attraction_info
-		WHERE title LIKE CONCAT('%', #{title}, '%')
-		<if test="sidoCode!=0">
-			AND sido_code=#{sidoCode}
-		</if>
+	<select id="getTotalAttractionCount" parameterType="map" resultType="int">
+		SELECT COUNT(ai.content_id) 
+		FROM attraction_info ai
+		LEFT OUTER JOIN attraction_description ad
+		ON ai.content_id=ad.content_id
+		<where>
+			<include refid="search"></include>
+		</where>
 	</select>
+	
+	<!-- <select id="listAttraction" parameterType="map" resultType="AttractionInfoDto">
+		SELECT
+			ai.content_id 'contentId', ai.content_type_id 'contentTypeId', ai.title 'title', 
+			ai.addr1 'addr1', ai.addr2 'addr2', ai.first_image 'firstImage'
+		FROM attraction_info ai
+		<where>
+			<include refid="search"></include>
+		</where>
+		ORDER BY ai.content_id
+		LIMIT #{start}, #{listsize}
+	</select>
+	
+	<select id="getTotalAttractionCount" parameterType="map" resultType="int">
+		SELECT COUNT(ai.content_id) 
+		FROM attraction_info ai
+		<where>
+			<include refid="search"></include>
+		</where>
+	</select> -->
 	
 	<insert id="saveHotplace" parameterType="HotplaceDto">
 		INSERT INTO hotplace(placeName, visitedDate, detail, userId)

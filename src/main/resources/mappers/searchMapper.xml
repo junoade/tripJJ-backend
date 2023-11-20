@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.attraction.dao.SidoGugunDao">
+	
+	<resultMap type="SidoGugunDto" id="sidoGugun">
+		<result column="sido_code" property="sidoCode"/>
+		<result column="sido_name" property="sidoName"/>
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="gugun_name" property="gugunName"/>
+	</resultMap>
+	
+	<!-- 시/도 -->
+	<select id="getSido" resultMap="sidoGugun">
+		SELECT * FROM sido
+		ORDER BY sido_code;
+	</select>
+	
+	<select id="getGugun" parameterType="String" resultMap="sidoGugun">
+		SELECT gugun_code, gugun_name
+		FROM gugun
+		WHERE sido_code=#{sidoCode}
+		ORDER BY gugun_code;
+	</select>
+	
+</mapper>
