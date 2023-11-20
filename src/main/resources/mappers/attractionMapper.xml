@@ -14,16 +14,16 @@
 	<!-- 검색 조건문 -->
 	<sql id="search">
 		<if test="sidoCode!='' and sidoCode!=null">
-			ai.sido_code = #{sidoCode}
+			AND ai.sido_code = #{sidoCode}
 		</if>
 		<if test="gugunCode!='' and gugunCode!=null">
-			ai.gugun_code = #{gugunCode}
+			AND ai.gugun_code = #{gugunCode}
 		</if>
 		<if test="contentTypeId!='' and contentTypeId!=null">
-			ai.content_type_id = #{contentTypeId}
+			AND ai.content_type_id = #{contentTypeId}
 		</if>
 		<if test="title!='' and title!=null">
-			ai.title LIKE CONCAT('%', #{title}, '%')
+			AND ai.title LIKE CONCAT('%', #{title}, '%')
 		</if>
 	</sql>
 	
