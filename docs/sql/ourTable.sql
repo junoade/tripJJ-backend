@@ -59,9 +59,9 @@ CREATE TABLE `board_qna` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs;
 
 CREATE TABLE `reply` (
-    `replyNo` int NOT NULL auto_increment,
-    `comment` varchar(2000) NOT NULL,
-    `publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`replyNo` int NOT NULL auto_increment,
+	`comment` varchar(2000) NOT NULL,
+	`publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     `articleNo` int NOT NULL,
     `userId` varchar(16) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE `reply` (
 );
 
 INSERT INTO `member`(userId, userName, userPass, userEmail, joinDate) VALUES
-    ('ssafy', '지준호','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
+	('ssafy', '지준호','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
     ('ssafy123','최준호','$2a$10$6/Z/NgVi2c5vIGkbhve6xOJuUYvxInw4YGo5SXZDXAaqKj8DnWe9u','ajchoi0928@gmail.com','2023-10-06 07:42:42'),
     ('taffy1234','김싸피','$2a$10$fQxtIPaG1aWQHMMUAdAUXO7z6M87rU39UD64L4qMwInHJhUFBem52','ssafy@ssafy.com','2023-10-06 07:43:28'),
     ('test','테스트','$2a$10$tli5kNFPlkuxFxHcOTlLkusAJZXUBeVhoeMi0n.rM3snQkIze/vny','test@test.com','2023-10-06 07:44:11'),
@@ -94,7 +94,7 @@ INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES
     ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
 
 INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES
-    ('ssafy', 'title1', 'content1'), ('ssafy123', 'title2', 'content2'),
+	('ssafy', 'title1', 'content1'), ('ssafy123', 'title2', 'content2'),
     ('taffy1234', 'title3', 'content3'), ('test', 'title4', 'content4'),
     ('zzafy', 'title5', 'content5'), ('ssafy', 'title6', 'content6'),
     ('ssafy123', 'title7', 'content7'), ('taffy1234', 'title8', 'content8'),
@@ -113,7 +113,7 @@ INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES
     ('test', 'title29', 'content29'), ('zzafy', 'title30', 'content30');
 
 INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES
-    ("댓글 1-1", 1, 'ssafy'), ("댓글 1-2", 1, 'ssafy123'), ("댓글 1-3", 1, 'taffy1234'), ("댓글 1-4", 1, 'test'), ("댓글 1-5", 1, 'zzafy'),
+	("댓글 1-1", 1, 'ssafy'), ("댓글 1-2", 1, 'ssafy123'), ("댓글 1-3", 1, 'taffy1234'), ("댓글 1-4", 1, 'test'), ("댓글 1-5", 1, 'zzafy'),
     ("댓글 1-6", 1, 'ssafy'), ("댓글 1-7", 1, 'ssafy123'), ("댓글 1-8", 1, 'taffy1234'), ("댓글 1-9", 1, 'test'), ("댓글 1-10", 1, 'zzafy'),
     ("댓글 2-1", 2, 'ssafy'), ("댓글 2-2", 2, 'ssafy123'), ("댓글 2-3", 2, 'taffy1234'), ("댓글 2-4", 2, 'test'), ("댓글 2-5", 2, 'zzafy'),
     ("댓글 2-6", 2, 'ssafy'), ("댓글 2-7", 2, 'ssafy123'), ("댓글 2-8", 2, 'taffy1234'), ("댓글 2-9", 2, 'test'), ("댓글 2-10", 2, 'zzafy'),

@@ -34,6 +34,13 @@
 		DELETE FROM member
 		WHERE userId=#{userId};
 	</delete>
+
+
+	<select id="selectUser" resultType="MemberDto">
+		SELECT *
+		FROM member
+		WHERE userId = #{userId};
+	</select>
 	
 	<update id="saveRefreshToken" parameterType="map">
 		UPDATE member
