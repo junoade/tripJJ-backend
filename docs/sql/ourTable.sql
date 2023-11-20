@@ -82,15 +82,16 @@ INSERT INTO `member`(userId, userName, userPass, userEmail, joinDate) VALUES
     ('test','테스트','$2a$10$tli5kNFPlkuxFxHcOTlLkusAJZXUBeVhoeMi0n.rM3snQkIze/vny','test@test.com','2023-10-06 07:44:11'),
     ('zzafy','싸피','$2a$10$tzHJA7.kjQonCBSsDC0/0O/pOsD/gV71DeTAkcg8nl.9S8Ud3EFSW','ssafy@ssafy.com','2023-10-06 07:43:47');
 
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서', '테스트 테스트', 5, '2023-10-01T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('taffy1234', 'TEST 투어 제안서2', '테스트 테스트', 10, '2023-10-02T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서3', '테스트 테스트', 15, '2023-10-03T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('test', 'TEST 투어 제안서4', '테스트 테스트', 20, '2023-10-04T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서5', '테스트 테스트', 25, '2023-10-05T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy', 'TEST 투어 제안서6', '테스트 테스트', 25, '2023-10-05T02:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('zzafy', 'TEST 투어 제안서7', '테스트 테스트', 25, '2023-10-05T05:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서8', '테스트 테스트', 25, '2023-10-05T06:41:05');
-INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
+INSERT INTO BOARD(`userId`, `title`, `content`, `hit`, `publishedDate`) VALUES 
+	('taffy1234', 'TEST 투어 제안서', '테스트 테스트', 5, '2023-10-01T02:41:05'),
+    ('taffy1234', 'TEST 투어 제안서2', '테스트 테스트', 10, '2023-10-02T02:41:05'),
+    ('test', 'TEST 투어 제안서3', '테스트 테스트', 15, '2023-10-03T02:41:05'),
+    ('test', 'TEST 투어 제안서4', '테스트 테스트', 20, '2023-10-04T02:41:05'),
+    ('ssafy', 'TEST 투어 제안서5', '테스트 테스트', 25, '2023-10-05T02:41:05'),
+    ('ssafy', 'TEST 투어 제안서6', '테스트 테스트', 25, '2023-10-05T02:41:05'),
+    ('zzafy', 'TEST 투어 제안서7', '테스트 테스트', 25, '2023-10-05T05:41:05'),
+    ('ssafy123', 'TEST 투어 제안서8', '테스트 테스트', 25, '2023-10-05T06:41:05'),
+    ('ssafy123', 'TEST 투어 제안서9', '테스트 테스트', 25, '2023-10-05T07:41:05');
 
 INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES
 	('ssafy', 'title1', 'content1'), ('ssafy123', 'title2', 'content2'),
@@ -114,7 +115,7 @@ INSERT INTO board_qna(`userId`,  `title`, `content`) VALUES
 INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES
 	("댓글 1-1", 1, 'ssafy'), ("댓글 1-2", 1, 'ssafy123'), ("댓글 1-3", 1, 'taffy1234'), ("댓글 1-4", 1, 'test'), ("댓글 1-5", 1, 'zzafy'),
     ("댓글 1-6", 1, 'ssafy'), ("댓글 1-7", 1, 'ssafy123'), ("댓글 1-8", 1, 'taffy1234'), ("댓글 1-9", 1, 'test'), ("댓글 1-10", 1, 'zzafy'),
-	("댓글 2-1", 2, 'ssafy'), ("댓글 2-2", 2, 'ssafy123'), ("댓글 2-3", 2, 'taffy1234'), ("댓글 2-4", 2, 'test'), ("댓글 2-5", 2, 'zzafy'),
+    ("댓글 2-1", 2, 'ssafy'), ("댓글 2-2", 2, 'ssafy123'), ("댓글 2-3", 2, 'taffy1234'), ("댓글 2-4", 2, 'test'), ("댓글 2-5", 2, 'zzafy'),
     ("댓글 2-6", 2, 'ssafy'), ("댓글 2-7", 2, 'ssafy123'), ("댓글 2-8", 2, 'taffy1234'), ("댓글 2-9", 2, 'test'), ("댓글 2-10", 2, 'zzafy'),
     ("댓글 3-1", 3, 'ssafy'), ("댓글 3-2", 3, 'ssafy123'), ("댓글 3-3", 3, 'taffy1234'), ("댓글 3-4", 3, 'test'), ("댓글 3-5", 3, 'zzafy'),
     ("댓글 3-6", 3, 'ssafy'), ("댓글 3-7", 3, 'ssafy123'), ("댓글 3-8", 3, 'taffy1234'), ("댓글 3-9", 3, 'test'), ("댓글 3-10", 3, 'zzafy');
