@@ -78,12 +78,12 @@ public class RestMemberController {
         HttpStatus status = HttpStatus.OK;
         Map<String, Object> resultMap = new HashMap<>();
 
-        String userFromTokenBody = authentication.getName();
+        String tokenBodyUserId = authentication.getName();
 
         log.debug("params : {}", userId);
-        log.debug("userFromTokenBody : {}", userFromTokenBody);
+        log.debug("userFromTokenBody : {}", tokenBodyUserId);
 
-        if(!userId.equals(userFromTokenBody)) {
+        if(!isExpectedMember(userId, tokenBodyUserId)) {
             status = HttpStatus.UNAUTHORIZED;
             return ResponseEntity.status(status).build();
         }
@@ -111,9 +111,9 @@ public class RestMemberController {
     @GetMapping("/logout/{userId}")
     public ResponseEntity<?> doLogout(@PathVariable String userId, Authentication authentication) {
         HttpStatus status = HttpStatus.ACCEPTED;
-        String userFromTokenBody = authentication.getName();
-        log.debug("userId : {}, token : {}", userId, userFromTokenBody);
-        if(userId.equals(userFromTokenBody)) {
+        String tokenBodyUserId = authentication.getName();
+        log.debug("userId : {}, token : {}", userId, tokenBodyUserId);
+        if(isExpectedMember(userId, tokenBodyUserId)) {
             try {
                 memberService.deleteRefreshToken(userId);
                 status = HttpStatus.OK;
@@ -146,6 +146,67 @@ public class RestMemberController {
         }
 
         return new ResponseEntity<>(resultMap, status);
+    }
+    
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteMember(@PathVariable String userId, Authentication authentication) {
+    	HttpStatus status = HttpStatus.ACCEPTED;
+        String tokenBodyUserId = authentication.getName();
+        log.debug("userId : {}, token : {}", userId, tokenBodyUserId);
+        
+        if(isExpectedMember(userId, tokenBodyUserId)) {
+            memberService.deleteMember(userId);
+			status = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(status);
+    }
+    
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateMember(@PathVariable String userId, 
+    		@RequestBody MemberDto memberDto, @RequestParam String newPass, Authentication authentication){
+    	log.debug("RequestBody : {}", memberDto);
+    	HttpStatus status = HttpStatus.ACCEPTED;
+        String tokenBodyUserId = authentication.getName();
+        log.debug("userId : {}, token : {}", userId, tokenBodyUserId);
+        
+        if(isExpectedMember(userId, tokenBodyUserId)) {
+            memberService.modifyMember(memberDto);
+			status = HttpStatus.OK;
+			log.debug("뀨2");
+        }
+
+        return new ResponseEntity<>(status);
+    }
+      
+    /**
+     * 회원 가입을 처리한다. 
+     * 
+     * @param memberDto
+     * @return
+     */
+    @PostMapping("")
+    public ResponseEntity<?> joinMember(@RequestBody MemberDto memberDto) {
+    	HttpStatus status = HttpStatus.ACCEPTED;
+    	log.debug("회원가입 시도 : {}", memberDto);
+    	try {
+    		memberService.registerMember(memberDto);
+    		status = HttpStatus.CREATED;
+    	} catch (Exception e) {
+    		status = HttpStatus.CONFLICT;
+    		log.error(e.getMessage());
+    	}
+    	return new ResponseEntity<>(status);
+    }
+    
+    /**
+     * URL의 파라미터로 전달된 userId와 실제 토큰에 저장된 userId의 일치 여부를 확인한다
+     * @param paramUserId
+     * @param tokenBodyUserId
+     * @return
+     */
+    private boolean isExpectedMember(String paramUserId, String tokenBodyUserId) {
+    	return paramUserId.equals(tokenBodyUserId);
     }
 
 }
