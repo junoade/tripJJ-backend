@@ -14,34 +14,63 @@
 	<!-- 검색 조건문 -->
 	<sql id="search">
 		<if test="sidoCode!='' and sidoCode!=null">
-			AND sido_code = #{sidoCode}
+			ai.sido_code = #{sidoCode}
 		</if>
 		<if test="gugunCode!='' and gugunCode!=null">
-			AND gugun_code = #{gugunCode}
+			ai.gugun_code = #{gugunCode}
 		</if>
 		<if test="contentTypeId!='' and contentTypeId!=null">
-			AND content_type_id = #{contentTypeId}
+			ai.content_type_id = #{contentTypeId}
 		</if>
 		<if test="title!='' and title!=null">
-			AND title LIKE CONCAT('%', #{title}, '%')
+			ai.title LIKE CONCAT('%', #{title}, '%')
 		</if>
 	</sql>
 	
-	<select id="listAttraction" parameterType="map" resultMap="attractionInfo">
-		SELECT * FROM attraction_info
+	<select id="listAttraction" parameterType="map" resultType="AttractionInfoDto">
+		SELECT
+			ai.content_id 'contentId', ai.content_type_id 'contentTypeId', ai.title 'title', 
+			ai.addr1 'addr1', ai.addr2 'addr2', ai.first_image 'firstImage', ad.overview 'overview',
+			ai.latitude 'latitude', ai.longitude 'longitude'
+		FROM attraction_info ai
+		LEFT OUTER JOIN attraction_description ad
+		ON ai.content_id=ad.content_id
 		<where>
 			<include refid="search"></include>
 		</where>
-		ORDER BY content_id
+		ORDER BY ai.content_id
 		LIMIT #{start}, #{listsize}
 	</select>
 	
 	<select id="getTotalAttractionCount" parameterType="map" resultType="int">
-		SELECT COUNT(content_id) FROM attraction_info
+		SELECT COUNT(ai.content_id) 
+		FROM attraction_info ai
+		LEFT OUTER JOIN attraction_description ad
+		ON ai.content_id=ad.content_id
 		<where>
 			<include refid="search"></include>
 		</where>
 	</select>
+	
+	<!-- <select id="listAttraction" parameterType="map" resultType="AttractionInfoDto">
+		SELECT
+			ai.content_id 'contentId', ai.content_type_id 'contentTypeId', ai.title 'title', 
+			ai.addr1 'addr1', ai.addr2 'addr2', ai.first_image 'firstImage'
+		FROM attraction_info ai
+		<where>
+			<include refid="search"></include>
+		</where>
+		ORDER BY ai.content_id
+		LIMIT #{start}, #{listsize}
+	</select>
+	
+	<select id="getTotalAttractionCount" parameterType="map" resultType="int">
+		SELECT COUNT(ai.content_id) 
+		FROM attraction_info ai
+		<where>
+			<include refid="search"></include>
+		</where>
+	</select> -->
 	
 	<insert id="saveHotplace" parameterType="HotplaceDto">
 		INSERT INTO hotplace(placeName, visitedDate, detail, userId)
