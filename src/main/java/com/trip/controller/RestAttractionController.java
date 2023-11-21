@@ -36,6 +36,7 @@ public class RestAttractionController {
 	@Autowired
 	private SidoGugunService searchService;
 	
+//	관광지 조회
 	@GetMapping("/search")
 	public ResponseEntity<?> listAttractions(@RequestParam Map<String, Object> param){
 		log.debug("[RestAttractionController]: /attraction/search with searchConditionDto = {}", param);
@@ -59,19 +60,28 @@ public class RestAttractionController {
 		}
 	}
 	
-	
-	@DeleteMapping("/{no}")
-	public ResponseEntity<?> delete(@PathVariable("no") int placeNo) {
-		log.debug("RestAttractionController - delete");
-		service.deleteHotPlace(placeNo);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-	@GetMapping("/{no}")
-	public ResponseEntity<?> getDetail(@PathVariable("no") int placeNo) throws SQLException {
-		log.debug("RestAttractionController - getDetail");
-		HotplaceDto dto = service.select(placeNo);
-		return new ResponseEntity<>(dto, HttpStatus.OK);
+//	관심 관광지 조회
+	@GetMapping("/interests")
+	public ResponseEntity<?> listInterests(@RequestParam Map<String, Object> param) {
+		log.debug("RestAttractionController - listInterests ", param);		
+		try {
+//			관광지 리스트, 현재 페이지, 전체 페이지 수 받아오기
+			AttractionInfoPagingList attractionInfoPagingList = service.listInterest(param);
+			
+//			반환할 HTTP의 헤더 설정
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			
+//			바디 설정
+			Map<String, Object> result = new HashMap();
+			result.put("attractions", attractionInfoPagingList.getAttractions());
+			result.put("currentPage", attractionInfoPagingList.getCurrentPage());
+			result.put("totalPageCount", attractionInfoPagingList.getTotalPage());
+			
+			return ResponseEntity.ok().headers(header).body(result);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
 	}
 	
 	@GetMapping("/sido")
@@ -89,5 +99,22 @@ public class RestAttractionController {
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+//	===========================================================================
+//	핫 플레이스 삭제
+	@DeleteMapping("/{no}")
+	public ResponseEntity<?> delete(@PathVariable("no") int placeNo) {
+		log.debug("RestAttractionController - delete");
+		service.deleteHotPlace(placeNo);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+//	핫 플레이스 조회
+	@GetMapping("/{no}")
+	public ResponseEntity<?> getDetail(@PathVariable("no") int placeNo) throws SQLException {
+		log.debug("RestAttractionController - getDetail");
+		HotplaceDto dto = service.select(placeNo);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 }

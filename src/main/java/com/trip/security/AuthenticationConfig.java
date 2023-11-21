@@ -41,8 +41,8 @@ public class AuthenticationConfig {
 				.antMatchers(MEMBER_LOGIN_URL, MEMBER_JOIN_URL, MEMBER_VALIDATE_URL, MEMBER_REFRESH_URL).permitAll()
 				// .antMatchers("/").permitAll()
 				// .antMatchers(HttpMethod.GET, )
-				.antMatchers("**").authenticated()
-				// .antMatchers("**").permitAll()
+//				.antMatchers("**").authenticated()
+				 .antMatchers("**").permitAll()
 				.and()
 				// session 관련
 				.sessionManagement()

@@ -1,5 +1,6 @@
 USE `enjoytrip_doublejj`;
 
+drop table if exists `interest`;
 drop table if exists `reply`;
 drop table if exists `board_qna`;
 DROP TABLE IF EXISTS `HOTPLACE`;
@@ -75,6 +76,20 @@ CREATE TABLE `reply` (
     CONSTRAINT `reply_to_member_fk` foreign key(`userId`) REFERENCES `member`(`userId`)
 );
 
+-- 사용자 관심 관광지 정보
+CREATE TABLE `interest` (
+	`userId` varchar(16) NOT NULL,
+    `content_id` int NOT NULL,
+    
+    -- 복합 키
+    PRIMARY KEY(`content_id`, `userId`),
+    
+    -- userID는 FK이며, `member` 내 존재하는 userId로만 만들 것!
+    KEY `interest_to_member_fk`(`userId`),
+    CONSTRAINT `interest_to_member_fk` foreign key(`userId`) REFERENCES `member`(`userId`)
+    -- 현재 Dump 내 attraction 관련 constraint 확인 불가. 렉이 너무 걸림.
+);
+
 INSERT INTO `member`(userId, userName, userPass, userEmail, joinDate) VALUES
 	('ssafy', '지준호','$2a$10$SeUCKp2Jq6FgwL6dieUmc.xE7pMBlX/I1deUpJNwny58vC3rtuFPq','ccamy@c.com','2023-10-06 07:43:06'),
     ('ssafy123','최준호','$2a$10$6/Z/NgVi2c5vIGkbhve6xOJuUYvxInw4YGo5SXZDXAaqKj8DnWe9u','ajchoi0928@gmail.com','2023-10-06 07:42:42'),
@@ -120,6 +135,13 @@ INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES
     ("댓글 3-1", 3, 'ssafy'), ("댓글 3-2", 3, 'ssafy123'), ("댓글 3-3", 3, 'taffy1234'), ("댓글 3-4", 3, 'test'), ("댓글 3-5", 3, 'zzafy'),
     ("댓글 3-6", 3, 'ssafy'), ("댓글 3-7", 3, 'ssafy123'), ("댓글 3-8", 3, 'taffy1234'), ("댓글 3-9", 3, 'test'), ("댓글 3-10", 3, 'zzafy');
 
+INSERT INTO interest(`userId`, `content_id`) VALUES
+	('ssafy', 125266), ('ssafy', 125407), ('ssafy', 125430), ('ssafy', 125565),
+    ('ssafy123', 125266), ('ssafy123', 125576), ('ssafy123', 125577), ('ssafy123', 125578), ('ssafy123', 125579), 
+    ('test', 125632), ('test', 125631), ('test', 125630);
+    
+
 select * from member;
 select * from board_qna;
 select * from reply;
+select * from interest;
