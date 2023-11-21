@@ -90,27 +90,34 @@
         <include refid="search"></include>
 	</select>
 	
+	<!-- 사용자가 관심 관광지 추가 -->
+	<insert id="insertInterests" parameterType="map">
+		INSERT INTO interest(userId, content_id)
+		VALUES
+			<foreach collection="interests" index="userId" item="contentId" separator="," >
+				(#{userId}, #{contentId})
+			</foreach>
+	</insert>
+	
+	<!-- 사용자가 관심 관광지 삭제 -->
+	<delete id="deleteInterests" parameterType="map">
+		DELETE FROM interest
+		<where>
+			<foreach collection="interests" index="userId" item="contentId" separator="OR">
+				(userId=#{userId} AND content_id=#{contentId})
+			</foreach>
+		</where>
+	</delete>
+	
 	<insert id="saveHotplace" parameterType="HotplaceDto">
 		INSERT INTO hotplace(placeName, visitedDate, detail, userId)
 		VALUES(#{placeName}, #{visitedDate}, #{detail}, #{userId});
-	</insert>
-	
-	<!-- 사용자가 관심 관광지 추가 -->
-	<insert id="saveInterest" parameterType="InterestDto">
-		INSERT INTO interest(userId, content_id)
-		VALUES(#{userId}, #{contentId})
 	</insert>
 	
 	<select id="hotPlaceList" parameterType="string" resultType="HotplaceDto">
 		SELECT * FROM hotplace
 		WHERE userId=#{userId};
 	</select>
-	
-	<!-- 사용자가 관심 관광지 삭제 -->
-	<delete id="deleteInterest" parameterType="InterestDto">
-		DELETE FROM interest
-		WHERE userId=#{userId} AND content_id=#{contentId}
-	</delete>
 	
 	<delete id="deleteHotPlace" parameterType="int">
 		DELETE FROM hotplace

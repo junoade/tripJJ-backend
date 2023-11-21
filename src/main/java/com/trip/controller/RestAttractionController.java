@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.trip.attraction.service.AttractionService;
@@ -79,6 +80,31 @@ public class RestAttractionController {
 			result.put("totalPageCount", attractionInfoPagingList.getTotalPage());
 			
 			return ResponseEntity.ok().headers(header).body(result);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+//	관심 관광지 추가
+	@PostMapping("/interests")
+	public ResponseEntity<?> insertInterests(@RequestBody Map<String, String> interests){
+		log.debug("관심 관광지 추가 : ", interests);
+		try {
+			int result = service.insertInterests(interests);
+			if(result!=1) return new ResponseEntity<Integer>(result, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+//	관심 관광지 제거
+	@DeleteMapping("/interests")
+	public ResponseEntity<?> deleteInterests(@RequestBody Map<String, String> interests){
+		log.debug("관심 관광지 제거 : ", interests);
+		try {
+			service.deleteInterests(interests);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch(Exception e) {
 			return exceptionHandling(e);
 		}

@@ -22,9 +22,9 @@ public interface AttractionService {
 	
 //	등록
 	int saveHotplace(HotplaceDto dto);
-	int saveInterest(InterestDto dto);
+	int insertInterests(Map<String, String> interests);
 
 //	삭제
     int deleteHotPlace(int placeNo);
-    int deleteInterest(InterestDto dto);
+    void deleteInterests(Map<String, String> interests);
 }
