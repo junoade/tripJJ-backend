@@ -7,9 +7,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import com.trip.snapshot.dto.KakaoApiArea;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,10 +33,12 @@ import lombok.extern.slf4j.Slf4j;
 public class RestSnapShotController {
 
 	@PostMapping
-	public ResponseEntity<?> uploadStory(@RequestPart("snapshot") Snapshot snapshot, @RequestPart("multipleFiles") List<MultipartFile> files) throws IOException{
+	public ResponseEntity<?> uploadStory(@RequestPart("snapshot") Snapshot snapshot,
+										 @RequestPart("area") Map<String, Object> area,
+										 @RequestPart("multipartFile") List<MultipartFile> files) throws IOException{
 		
 		log.debug("uploadStory 호출");
-		log.debug("스냅샷 : {}", snapshot);
+		log.debug("snapshot : {}, area : {}", snapshot, area);
 		for(MultipartFile file : files) {
 			log.debug("업로드 이미지 : {} {} {}", file.getName(), file.getOriginalFilename(), file.getResource());
 		}
