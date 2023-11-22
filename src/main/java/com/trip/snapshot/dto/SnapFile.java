@@ -5,7 +5,7 @@ public class SnapFile {
 	private Integer snapId;
 	private String originalFilename; 
 	private String originalExtension;
-	private String managementFilename;
+	private String storedFilename;
 	private String storePathPrefix;
 	private Long size;
 	private String createdDate;

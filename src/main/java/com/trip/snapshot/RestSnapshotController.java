@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import com.trip.exceptions.InvalidPlaceException;
 import com.trip.snapshot.dto.KakaoApiArea;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,6 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 public class RestSnapshotController {
 
 	private final SnapshotService service;
+
+	@Value("${upload.path}")
+	private String USER_DIR;
 	
 	
 	@PostMapping
@@ -48,11 +52,11 @@ public class RestSnapshotController {
 		log.debug("uploadStory 호출");
 		log.debug("snapshot : {}, area : {}", snapshot, area);
 		
-		String uploadDir = "C:/SSAFY/trip_jj/triprest/images/" ;
+//		String uploadDir = "C:/SSAFY/trip_jj/triprest/images/" ;
 		
 		for(MultipartFile file : files) {
 			log.debug("업로드 이미지 : {} {} {}", file.getName(), file.getOriginalFilename(), file.getResource());
-			file.transferTo(new File(uploadDir + file.getOriginalFilename()));
+			file.transferTo(new File(USER_DIR + file.getOriginalFilename()));
 		}
 		
 		HttpStatus status = HttpStatus.ACCEPTED;

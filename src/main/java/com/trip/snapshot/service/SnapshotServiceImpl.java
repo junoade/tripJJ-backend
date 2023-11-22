@@ -22,6 +22,8 @@ public class SnapshotServiceImpl implements SnapshotService {
     private final SnapshotMapper snapshotMapper;
     private final PlaceSearchMapper placeSearchMapper;
 
+    // 파일 업로드 관련 Mapper 필요
+
 
     @Transactional
     @Override
