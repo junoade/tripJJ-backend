@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ public class AuthenticationConfig {
 	private static final String MEMBER_JOIN_URL = "/member/join";
 	private static final String MEMBER_VALIDATE_URL = "/member/validate/**";
 	private static final String MEMBER_REFRESH_URL = "/member/refresh";
+	private static final String MEMBER_URL = "/member";
 	
 	private final JwtFilter jwtFilter; // 스프링 컨테이너가 관리하는 JwtFilter 빈 주입
 	
@@ -39,6 +41,7 @@ public class AuthenticationConfig {
 				.cors().and()
 				.authorizeRequests()
 				.antMatchers(MEMBER_LOGIN_URL, MEMBER_JOIN_URL, MEMBER_VALIDATE_URL, MEMBER_REFRESH_URL).permitAll()
+				.antMatchers(HttpMethod.POST, MEMBER_URL).permitAll()
 				// .antMatchers("/").permitAll()
 				// .antMatchers(HttpMethod.GET, )
 //				.antMatchers("**").authenticated()
