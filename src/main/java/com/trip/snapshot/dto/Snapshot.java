@@ -12,9 +12,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Snapshot {
+	private Integer id;
 	private String userId;
-	private String contentId;
-	private String location;
+	private Integer contentId; // 관광지정보 테이블 pk
 	private String tag;	
 	private String startDate;
 	private String endDate;

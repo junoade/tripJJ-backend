@@ -24,4 +24,8 @@ public interface AttractionDao {
 
 //	삭제
 	int deleteHotPlace(int placeNo);
+	
+	// 특정 주소 또는 경도를 바탕으로 pk 반환
+	int findAttractionIdByAddress(String road_address_name, String place_name);
+	
 }

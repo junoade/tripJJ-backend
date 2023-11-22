@@ -1,4 +1,70 @@
 package com.trip.snapshot.service;
 
-public class SnapshotServiceImpl {
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.trip.attraction.AttractionInfoDto;
+import com.trip.attraction.dao.AttractionDao;
+import com.trip.exceptions.InvalidPlaceException;
+import com.trip.snapshot.dto.Snapshot;
+import com.trip.snapshot.mapper.SnapshotMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class SnapshotServiceImpl implements SnapshotService {
+	
+	private final SnapshotMapper snapshotMapper;
+	private final AttractionDao attractionMapper;
+
+	
+	@Transactional
+	@Override
+	public int uploadSnapshot(Snapshot snapshot, Map<String, Object> area) throws SQLException, InvalidPlaceException {
+		
+		String road_address_name = (String)area.get("road_address_name");
+		String place_name = (String)area.get("place_name");
+		Integer contentId = attractionMapper.findAttractionIdByAddress(road_address_name, place_name);
+		
+		if(contentId == 0) {
+			throw new InvalidPlaceException();
+		}
+		
+		snapshot.setContentId(contentId);
+		
+		return snapshotMapper.insertSnapshot(snapshot);
+	}
+
+	@Override
+	public int modifySnapshot(Snapshot snapshot, Map<String, Object> area) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteSnapshot(Integer id) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Snapshot> getSnapshotByUserId(String userId) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Optional<Snapshot> getSnapshotBySnapshotId(Integer id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 }
