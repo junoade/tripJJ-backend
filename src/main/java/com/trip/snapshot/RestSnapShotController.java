@@ -51,15 +51,18 @@ public class RestSnapShotController {
 			log.debug("업로드 이미지 : {} {} {}", file.getName(), file.getOriginalFilename(), file.getResource());
 		}
 		
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
 		try {
 			service.uploadSnapshot(snapshot, area);
+			status = HttpStatus.OK;
 		} catch (InvalidPlaceException e) {
-		
+			status = HttpStatus.NOT_FOUND;
 		} catch (Exception e) {
-			
+			status = HttpStatus.NOT_ACCEPTABLE;
 		}
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(status);
 	}
 	
 }
