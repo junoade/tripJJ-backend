@@ -30,15 +30,21 @@ public class SnapshotServiceImpl implements SnapshotService {
 		
 		String road_address_name = (String)area.get("road_address_name");
 		String place_name = (String)area.get("place_name");
-		Integer contentId = attractionMapper.findAttractionIdByAddress(road_address_name, place_name);
+		validateAddressInfo(road_address_name, place_name);
 		
+		Integer contentId = attractionMapper.findAttractionIdByAddress(road_address_name, place_name);
 		if(contentId == 0) {
 			throw new InvalidPlaceException();
 		}
 		
 		snapshot.setContentId(contentId);
-		
 		return snapshotMapper.insertSnapshot(snapshot);
+	}
+	
+	private void validateAddressInfo(String road_address_name, String place_name) throws InvalidPlaceException{
+		if(road_address_name.equals("") || place_name.equals("")) {
+			throw new InvalidPlaceException();
+		}
 	}
 
 	@Override
