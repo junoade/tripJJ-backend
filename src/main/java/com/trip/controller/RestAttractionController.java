@@ -1,17 +1,13 @@
 package com.trip.controller;
 
-import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.AttractionInfoPagingList;
 import com.trip.attraction.HotplaceDto;
-import com.trip.attraction.SearchConditionDto;
 import com.trip.attraction.SidoGugunDto;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.trip.attraction.service.AttractionService;
@@ -61,7 +57,7 @@ public class RestAttractionController {
 		}
 	}
 	
-//	관심 관광지 조회
+//	관심 관광지 조회 with 검색 조건
 	@GetMapping("/interests")
 	public ResponseEntity<?> listInterests(@RequestParam Map<String, Object> param) {
 		log.debug("RestAttractionController - listInterests ", param);		
@@ -85,30 +81,25 @@ public class RestAttractionController {
 		}
 	}
 	
-//	관심 관광지 추가
-	@PostMapping("/interests")
-	public ResponseEntity<?> insertInterests(@RequestBody Map<String, String> interests){
-		log.debug("관심 관광지 추가 : ", interests);
-		try {
-			int result = service.insertInterests(interests);
-			if(result!=1) return new ResponseEntity<Integer>(result, HttpStatus.BAD_REQUEST);
-			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
-		} catch(Exception e) {
-			return exceptionHandling(e);
-		}
+//	특정 사용자의 모든 관심 관광지 조회
+	@GetMapping("/interests/contentIds")
+	public ResponseEntity<List<Integer>> listInterestsContentId(@RequestParam String userId){
+		log.debug("RestAttractionController - listInterestsContentId ".concat(userId));
+		return new ResponseEntity<>(service.listInterestContentId(userId), HttpStatus.OK);
 	}
 	
-//	관심 관광지 제거
-	@DeleteMapping("/interests")
-	public ResponseEntity<?> deleteInterests(@RequestBody Map<String, String> interests){
-		log.debug("관심 관광지 제거 : ", interests);
+//	관심 관광지 업데이트
+	@PostMapping("/interests")
+	public ResponseEntity<?> updateInterests(@RequestBody Map<String, Object> interests) {
+		log.debug("관심 관광지 삭제 및 추가 : ", interests);
 		try {
-			service.deleteInterests(interests);
+			service.updateInterests(interests);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch(Exception e) {
 			return exceptionHandling(e);
 		}
 	}
+	
 	
 	@GetMapping("/sido")
 	public ResponseEntity<List<SidoGugunDto>> sido() throws Exception {

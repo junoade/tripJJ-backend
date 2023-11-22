@@ -1,12 +1,14 @@
 package com.trip.attraction.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.AttractionInfoPagingList;
@@ -14,6 +16,9 @@ import com.trip.attraction.HotplaceDto;
 import com.trip.attraction.InterestDto;
 import com.trip.attraction.dao.AttractionDao;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class AttractionServiceImpl implements AttractionService {
 
@@ -80,15 +85,28 @@ public class AttractionServiceImpl implements AttractionService {
 
 		return attractionInfoPagingList;
 	}
-
+	
 	@Override
-	public int insertInterests(Map<String, String> interests) {
-		return dao.insertInterests(interests);
+	public List<Integer> listInterestContentId(String userId) {
+		return dao.listInterestContentId(userId);
 	}
 
+	@Transactional
 	@Override
-	public void deleteInterests(Map<String, String> interests) {
-		dao.deleteInterests(interests);
+	public void updateInterests(Map<String, Object> param) {
+		Map<String, Object> map = new HashMap();
+		String userId = (String) param.getOrDefault("userId", "");
+		log.debug(userId);
+		
+		List<Integer> addInterests = (List) param.getOrDefault("addInterests", null);
+		List<Integer> delInterests = (List) param.getOrDefault("delInterests", null);
+		
+		map.put("userId", userId);
+		map.put("addInterests", addInterests);
+		map.put("delInterests", delInterests);
+		
+		dao.deleteInterests(map);
+		dao.insertInterests(map);
 	}
 
 //	=======================================

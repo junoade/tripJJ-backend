@@ -138,7 +138,7 @@ INSERT INTO reply(`comment`, `articleNo`, `userId`) VALUES
 INSERT INTO interest(`userId`, `content_id`) VALUES
 	('ssafy', 125266), ('ssafy', 125407), ('ssafy', 125430), ('ssafy', 125565),
     ('ssafy123', 125266), ('ssafy123', 125576), ('ssafy123', 125577), ('ssafy123', 125578), ('ssafy123', 125579), 
-    ('test', 125632), ('test', 125631), ('test', 125630);
+    ('test', 125632), ('test', 125631), ('test', 125630), ('test', 125266), ('test', 125407);
     
 
 select * from member;

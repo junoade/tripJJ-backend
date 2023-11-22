@@ -59,12 +59,12 @@
 		</where>
 	</select>
 	
-	<!-- 특정 사용자가 저장한 관심 관광지 조회 -->
+	<!-- 특정 사용자가 저장한 관심 관광지 조회 with 검색 조건 -->
 	<select id="listInterest" parameterType="map" resultType="AttractionInfoDto">
 		SELECT
 			ai.content_id 'contentId', ai.content_type_id 'contentTypeId', ai.title 'title', 
 			ai.addr1 'addr1', ai.addr2 'addr2', ai.first_image 'firstImage', ad.overview 'overview',
-			ai.latitude 'latitude', ai.longitude 'longitude' 
+			ai.latitude 'latitude', ai.longitude 'longitude'
 		FROM attraction_info ai
 		LEFT OUTER JOIN attraction_description ad
 		ON ai.content_id=ad.content_id
@@ -77,7 +77,14 @@
 		LIMIT #{start}, #{listsize}
 	</select>
 	
-	<!-- 특정 사용자가 저장한 관심 관광지 조회 총 개수 -->
+	<!-- 특정 사용자의 모든 관심 관광지 content_id 조회 -->
+	<select id="listInterestContentId" parameterType="String" resultType="int">
+		SELECT content_id
+		FROM interest
+		WHERE userId = #{userId}
+	</select>
+	
+	<!-- 특정 사용자가 저장한 관심 관광지 조회 총 개수 with 검색 조건 -->
 	<select id="getTotalInterestCount" parameterType="map" >
 		SELECT COUNT(ai.content_id)
 		FROM attraction_info ai
@@ -94,7 +101,7 @@
 	<insert id="insertInterests" parameterType="map">
 		INSERT INTO interest(userId, content_id)
 		VALUES
-			<foreach collection="interests" index="userId" item="contentId" separator="," >
+			<foreach collection="addInterests" index="idx" item="contentId" separator="," >
 				(#{userId}, #{contentId})
 			</foreach>
 	</insert>
@@ -102,11 +109,11 @@
 	<!-- 사용자가 관심 관광지 삭제 -->
 	<delete id="deleteInterests" parameterType="map">
 		DELETE FROM interest
-		<where>
-			<foreach collection="interests" index="userId" item="contentId" separator="OR">
-				(userId=#{userId} AND content_id=#{contentId})
-			</foreach>
-		</where>
+		WHERE userId = #{userId} 
+			AND content_id IN (
+			<foreach collection="delInterests" index="idx" item="contentId" separator=",">
+				#{contentId}
+			</foreach>)
 	</delete>
 	
 	<insert id="saveHotplace" parameterType="HotplaceDto">

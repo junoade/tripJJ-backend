@@ -19,12 +19,15 @@ public interface AttractionService {
 	HotplaceDto select(int placeNo) throws SQLException;
 	
 	AttractionInfoPagingList listInterest(Map<String, Object> param);
+	List<Integer> listInterestContentId(String userId);
 	
 //	등록
 	int saveHotplace(HotplaceDto dto);
-	int insertInterests(Map<String, String> interests);
 
 //	삭제
     int deleteHotPlace(int placeNo);
-    void deleteInterests(Map<String, String> interests);
+    
+//  수정
+    void updateInterests(Map<String, Object> param);
+    
 }
