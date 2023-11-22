@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.search.mapper.PlaceSearchMapper">
+    <!-- 부모 타입으로만 일단 전달할 때-->
+    <resultMap id="attractionInfo" type="AttractionInfo">
+        <id column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="addr1" property="addr1"/>
+    </resultMap>
+
+    <resultMap id="attractionInfoDB" type="AttractionInfo_DB">
+        <id column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="addr1" property="addr1"/>
+        <result column="addr2" property="addr2"/>
+        <result column="content_type_id" property="contentTypeId"/>
+        <result column="readcount" property="readCount"/>
+        <result column="first_image" property="firstImage"/>
+        <result column="first_image2" property="firstImage2"/>
+    </resultMap>
+
+    <resultMap id="attractionInfoKakao" type="AttractionInfo_Kakao">
+        <id column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="addr1" property="addr1"/>
+        <result column="readcount" property="readCount"/>
+        <result column="category_group_code" property="categoryGroupCode"/>
+        <result column="category_group_name" property="categoryGroupName"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="place_url" property="placeUrl"/>
+    </resultMap>
+
+
+    <select id="findAttractionIdByAddress" parameterType="string">
+        SELECT content_id
+        FROM attraction_info
+        WHERE addr1 LIKE CONCAT('%', REPLACE(#{road_address_name}, ' ', '%'), '%')
+          AND title LIKE CONCAT('%', #{place_name}, '%');
+    </select>
+
+    <select id="findAttractionByAddress" parameterType="string" resultMap="attractionInfoDB">
+        SELECT *
+        FROM attraction_info
+        WHERE addr1 LIKE CONCAT('%', REPLACE(#{road_address_name}, ' ', '%'), '%')
+          AND title LIKE CONCAT('%', #{place_name}, '%');
+    </select>
+
+    <insert id="insertKakaoAttraction" parameterType="map">
+        INSERT INTO attraction_kakao(title, addr1, latitude, longitude,
+                                     phone, category_group_code, category_group_name, category_name, place_url)
+        VALUES(#{place_name}, #{road_address_name}, #{y}, #{x},
+               #{phone}, #{category_group_code}, #{category_group_name}, #{category_name}, #{place_url});
+    </insert>
+
+    <select id="selectKakaoAttraction" parameterType="string" resultMap="attractionInfoKakao">
+        SELECT *
+        FROM attraction_kakao
+        WHERE addr1 LIKE CONCAT('%', REPLACE(#{road_address_name}, ' ', '%'), '%')
+          AND title LIKE CONCAT('%', #{place_name}, '%');
+    </select>
+
+    <select id="findNearestAttraction" resultMap="attractionInfoDB">
+        SELECT *
+        FROM attraction_info
+        WHERE longitude LIKE CONCAT(ROUND(#{longitude}, 4), '%') AND latitude LIKE CONCAT(ROUND(#{latitude}, 4), '%')
+        UNION
+        SELECT * FROM attraction_info WHERE addr1 LIKE CONCAT('%', REPLACE(#{addr1}, ' ', '%'), '%');
+    </select>
+</mapper>

@@ -1,62 +1,68 @@
 package com.trip.search.service;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.trip.search.dto.AttractionInfo;
+import com.trip.search.dto.AttractionInfo_DB;
+import com.trip.search.mapper.PlaceSearchMapper;
 import org.springframework.stereotype.Service;
 
-import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.dao.AttractionDao;
-import com.trip.attraction.dto.AttractionInfo_Kakao;
 import com.trip.exceptions.InvalidPlaceException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
 	
-	private final AttractionDao attractionMapper;
+	private final PlaceSearchMapper placeSearchMapper;
+	private final AttractionFactory factory;
 
+
+	/**
+	 * 관광지 정보, 가까운 관광지를 반환
+	 * @param area
+	 * @return
+	 * @throws InvalidPlaceException
+	 * @throws SQLException
+	 */
+	@Transactional
+	public Map<String, Object> getRecommendInfo(Map<String, Object> area) throws InvalidPlaceException, SQLException {
+		Map<String, Object> resultMap = new HashMap<>();
+		AttractionInfo info = getAttractionInfo(area);
+
+		resultMap.put("attraction_info", info);
+		log.debug("attraction_info : {}", info);
+		resultMap.put("nearPlaces", getCloseAttraction(info.getLongitude(), info.getLatitude(), info.getAddr1()));
+		return resultMap;
+	}
+
+
+	/**
+	 * 도로명 주소, 장소 이름을 바탕으로 DB에 저장된 관광지 정보 id를 기록
+	 * @param area
+	 * @return
+	 * @throws InvalidPlaceException
+	 * @throws SQLException
+	 */
+	@Transactional
 	@Override
-	public Optional<AttractionInfoDto> getAttractionInfo(Map<String, Object> area) throws InvalidPlaceException {
-		String road_address_name = (String)area.get("road_address_name");
-		String place_name = (String)area.get("place_name");
-		validateAddressInfo(road_address_name, place_name);
-		
-		Optional<AttractionInfoDto> attractionInfo = attractionMapper.findAttractionByAddress(road_address_name, place_name);
-		
-		//카카오 API - 우리 DB 연동 안된 신규 장소네?
-		if(!attractionInfo.isPresent()) {
-			attractionMapper.insertKakaoAttraction(area);
-			Optional<AttractionInfo_Kakao>
-		}
-		
-		// 그러면 
-		// attractionMapper.insert()
-		//Optional<AttractionInfoDto> 
-		
-		// AttractionInfoDto = AttractionInfo_DbDto;
-		// AttractionInfoDto = AttractionInfo_KakaoDto
-		// ???
-		// return new ResponseEntity<>(dto); 
-		
-		// AttractionInfo_DbDto
-		// AttractionInfo_KakaoDto
-		
-		
-		
-		return attractionInfo;
-	}
-	
-	private void validateAddressInfo(String road_address_name, String place_name) throws InvalidPlaceException{
-		if(road_address_name.equals("") || place_name.equals("")) {
-			throw new InvalidPlaceException();
-		}
+	public AttractionInfo getAttractionInfo(Map<String, Object> area) throws InvalidPlaceException, SQLException {
+		AttractionInfo info = factory.createAttractionInfo(area);
+		log.debug(info.toString());
+		return info;
 	}
 
+	public List<AttractionInfo_DB> getCloseAttraction(Double longitude, Double latitude, String addr1) throws SQLException {
+		return placeSearchMapper.findNearestAttraction(longitude, latitude, addr1);
+	}
 
-	
 }

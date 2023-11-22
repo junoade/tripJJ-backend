@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.trip.search.dto.AttractionInfo;
 import org.apache.ibatis.annotations.Mapper;
 import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.HotplaceDto;
-import com.trip.attraction.SearchConditionDto;
 
 @Mapper
 public interface AttractionDao {
@@ -25,9 +25,4 @@ public interface AttractionDao {
 
 //	삭제
 	int deleteHotPlace(int placeNo);
-	
-	// 특정 주소 또는 경도를 바탕으로 pk 반환
-	int findAttractionIdByAddress(String road_address_name, String place_name);
-	Optional<AttractionInfoDto> findAttractionByAddress(String road_address_name, String place_name);
-	
 }

@@ -10,7 +10,7 @@
 		<result column="addr2" property="addr2"/>
 		<result column="first_image" property="firstImage"/>
 	</resultMap>
-	
+
 	<!-- 검색 조건문 -->
 	<sql id="search">
 		<if test="sidoCode!='' and sidoCode!=null">
@@ -90,19 +90,5 @@
 	<select id="select" parameterType="int" resultType="HotplaceDto">
 		SELECT * FROM hotplace
 		WHERE placeNo = #{placeNo}
-	</select>
-
-	<select id="findAttractionIdByAddress" parameterType="string">
-		SELECT content_id
-		FROM attraction_info 
-		WHERE addr1 LIKE CONCAT('%', REPLACE(#{road_address_name}, ' ', '%'), '%') 
-			AND title LIKE CONCAT('%', #{place_name}, '%');
-	</select>
-	
-	<select id="findAttractionByAddress" parameterType="string" resultMap="attractionInfo">
-		SELECT *
-		FROM attraction_info 
-		WHERE addr1 LIKE CONCAT('%', REPLACE(#{road_address_name}, ' ', '%'), '%') 
-			AND title LIKE CONCAT('%', #{place_name}, '%');
 	</select>
 </mapper>
