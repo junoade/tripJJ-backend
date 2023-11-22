@@ -38,6 +38,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 		}
 		
 		snapshot.setContentId(contentId);
+		
 		return snapshotMapper.insertSnapshot(snapshot);
 	}
 	

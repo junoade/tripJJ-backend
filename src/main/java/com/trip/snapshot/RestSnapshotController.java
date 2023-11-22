@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/snapshot")
 @RequiredArgsConstructor
-public class RestSnapShotController {
+public class RestSnapshotController {
 
 	private final SnapshotService service;
 	
@@ -47,8 +47,12 @@ public class RestSnapShotController {
 		
 		log.debug("uploadStory 호출");
 		log.debug("snapshot : {}, area : {}", snapshot, area);
+		
+		String uploadDir = "C:/SSAFY/trip_jj/triprest/images/" ;
+		
 		for(MultipartFile file : files) {
 			log.debug("업로드 이미지 : {} {} {}", file.getName(), file.getOriginalFilename(), file.getResource());
+			file.transferTo(new File(uploadDir + file.getOriginalFilename()));
 		}
 		
 		HttpStatus status = HttpStatus.ACCEPTED;
