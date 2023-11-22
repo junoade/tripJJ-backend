@@ -28,6 +28,6 @@ public interface AttractionService {
     int deleteHotPlace(int placeNo);
     
 //  수정
-    void updateInterests(Map<String, Object> param);
+    void updateInterests(InterestDto interests);
     
 }

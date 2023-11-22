@@ -2,6 +2,7 @@ package com.trip.controller;
 
 import com.trip.attraction.AttractionInfoPagingList;
 import com.trip.attraction.HotplaceDto;
+import com.trip.attraction.InterestDto;
 import com.trip.attraction.SidoGugunDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -90,7 +91,7 @@ public class RestAttractionController {
 	
 //	관심 관광지 업데이트
 	@PostMapping("/interests")
-	public ResponseEntity<?> updateInterests(@RequestBody Map<String, Object> interests) {
+	public ResponseEntity<?> updateInterests(@RequestBody InterestDto interests) {
 		log.debug("관심 관광지 삭제 및 추가 : ", interests);
 		try {
 			service.updateInterests(interests);
@@ -99,7 +100,6 @@ public class RestAttractionController {
 			return exceptionHandling(e);
 		}
 	}
-	
 	
 	@GetMapping("/sido")
 	public ResponseEntity<List<SidoGugunDto>> sido() throws Exception {

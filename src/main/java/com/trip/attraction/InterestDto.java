@@ -1,5 +1,7 @@
 package com.trip.attraction;
 
+import java.util.List;
+
 import lombok.*;
 
 // 관심 관광지 정보
@@ -11,6 +13,7 @@ import lombok.*;
 public class InterestDto {
 	
 	String userId;
-	int contentId;
+	List<Integer> addInterests;
+	List<Integer> delInterests;
 	
 }

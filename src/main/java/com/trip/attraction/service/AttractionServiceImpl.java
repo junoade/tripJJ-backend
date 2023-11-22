@@ -93,20 +93,19 @@ public class AttractionServiceImpl implements AttractionService {
 
 	@Transactional
 	@Override
-	public void updateInterests(Map<String, Object> param) {
+	public void updateInterests(InterestDto interests) {
 		Map<String, Object> map = new HashMap();
-		String userId = (String) param.getOrDefault("userId", "");
-		log.debug(userId);
 		
-		List<Integer> addInterests = (List) param.getOrDefault("addInterests", null);
-		List<Integer> delInterests = (List) param.getOrDefault("delInterests", null);
+		String userId = interests.getUserId();
+		List<Integer> addInterests = interests.getAddInterests();
+		List<Integer> delInterests = interests.getDelInterests();
 		
 		map.put("userId", userId);
 		map.put("addInterests", addInterests);
 		map.put("delInterests", delInterests);
 		
-		dao.deleteInterests(map);
-		dao.insertInterests(map);
+		if(!delInterests.isEmpty()) dao.deleteInterests(map);
+		if(!addInterests.isEmpty()) dao.insertInterests(map);
 	}
 
 //	=======================================

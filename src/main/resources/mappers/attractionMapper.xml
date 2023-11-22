@@ -99,21 +99,25 @@
 	
 	<!-- 사용자가 관심 관광지 추가 -->
 	<insert id="insertInterests" parameterType="map">
-		INSERT INTO interest(userId, content_id)
-		VALUES
+		<if test="addInterests!=null and addInterests.size>0">
+			INSERT INTO interest(userId, content_id)
+			VALUES
 			<foreach collection="addInterests" index="idx" item="contentId" separator="," >
 				(#{userId}, #{contentId})
 			</foreach>
+		</if>
 	</insert>
 	
 	<!-- 사용자가 관심 관광지 삭제 -->
 	<delete id="deleteInterests" parameterType="map">
-		DELETE FROM interest
-		WHERE userId = #{userId} 
+		<if test="delInterests!=null and delInterests.size>0">
+			DELETE FROM interest
+			WHERE userId = #{userId} 
 			AND content_id IN (
 			<foreach collection="delInterests" index="idx" item="contentId" separator=",">
 				#{contentId}
 			</foreach>)
+		</if>
 	</delete>
 	
 	<insert id="saveHotplace" parameterType="HotplaceDto">
