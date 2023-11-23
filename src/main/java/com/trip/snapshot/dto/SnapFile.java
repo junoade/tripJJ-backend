@@ -1,5 +1,12 @@
 package com.trip.snapshot.dto;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class SnapFile {
 	private Integer id;
 	private Integer snapId;
@@ -8,5 +15,12 @@ public class SnapFile {
 	private String storedFilename;
 	private String storePathPrefix;
 	private Long size;
-	private String createdDate;	
+	private String createdDate;
+
+	@Builder
+	public SnapFile(String originalFilename, String originalExtension, Long size) {
+		this.originalFilename = originalFilename;
+		this.originalExtension = originalExtension;
+		this.size = size;
+	}
 }

@@ -33,7 +33,14 @@
 	<insert id="insertSnapshot" parameterType="Snapshot">
 		INSERT INTO snapshot(userId, content_id, content, tag, start_date, end_date) 
 			VALUES (#{userId}, #{contentId}, #{content}, #{tag}, #{startDate}, #{endDate})
+		<selectKey keyProperty="id" resultType="Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
 	</insert>
+
+<!--	<select id="getLastInsertId" resultType="int">-->
+<!--		SELECT LAST_INSERT_ID()-->
+<!--	</select>-->
 	
 	<update id="modifySnapshot" parameterType="Snapshot">
 	</update>
@@ -69,5 +76,30 @@
 				ON a.content_Id = s.content_id
 		WHERE s.id = #{id}
 	</select>
-	
+
+	<!-- 스냅샷 테이블 - 스냅 파일 삽입 관련-->
+	<resultMap id="snapFile" type="SnapFile">
+		<id column="id" property="id"/>
+		<result column="snap_id" property="snapId"/>
+		<result column="original_filename" property="originalFilename"/>
+		<result column="original_extension" property="originalExtension"/>
+		<result column="stored_filename" property="storedFilename"/>
+		<result column="stored_path_prefix" property="storePathPrefix"/>
+		<result column="size" property="size"/>
+		<result column="created_date" property="createdDate"/>
+	</resultMap>
+
+	<insert id="insertSnapshotFiles" parameterType="Map">
+		INSERT INTO SNAP_FILE(snap_id, original_filename, original_extension, stored_filename, stored_path_prefix, size)
+		VALUES
+		<foreach collection="files" item="f" separator=",">
+			(#{snapId}, #{f.originalFilename}, #{f.originalExtension},#{f.storedFilename},#{f.storePathPrefix},#{f.size})
+		</foreach>
+	</insert>
+
+	<select id="findBySnapId" parameterType="string" resultMap="snapFile">
+		SELECT *
+		FROM SNAP_FILE
+		WHERE snap_id = #{snapId}
+	</select>
 </mapper>
