@@ -189,6 +189,6 @@ select * from member;
 select * from board_qna;
 select * from reply;
 select * from interest;
-select * from snap;
+select * from snapshot;
 select * from attraction_kakao;
 select * from snap_file;
