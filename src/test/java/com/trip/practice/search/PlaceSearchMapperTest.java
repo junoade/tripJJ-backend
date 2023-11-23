@@ -1,37 +1,39 @@
-package com.trip.practice.snapshot;
+package com.trip.practice.search;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.trip.attraction.dao.AttractionDao;
-import com.trip.practice.board.repo.BoardDaoTest;
+import com.trip.practice.snapshot.SnapshotMapperTest;
 import com.trip.search.mapper.PlaceSearchMapper;
-import com.trip.snapshot.dto.Snapshot;
-import com.trip.snapshot.mapper.SnapshotMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest // Spring 환경에서 테스트
-public class SnapshotMapperTest {
+public class PlaceSearchMapperTest {
 	
 	@Autowired
-	private SnapshotMapper mapper;
+	private PlaceSearchMapper mapper;
 	
 	@Test
-	public void testFindSnapshotList() {
+	public void testGetAttractionId() {
+		String road_address_name = "서울 종로구 사직로 161";
+		String place_name = "광화문";
+		
+		int expected = 126512;
+		int actual = 0;
 		try {
-			List<Snapshot> result = mapper.findSnapshotList();
-			log.debug("result : {}", result);
+			actual = mapper.findAttractionIdByAddress(road_address_name, place_name);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		assertEquals(expected, actual);
 	}
 }

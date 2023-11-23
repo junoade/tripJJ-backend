@@ -14,6 +14,7 @@ public interface SnapshotMapper {
 	int modifySnapshot(Snapshot snapshot) throws SQLException;
 	int deleteSnapshot(Integer no) throws SQLException;
 	
+	List<Snapshot> findSnapshotList() throws SQLException;
 	List<Snapshot> findSnapshotByUserId(String userId) throws SQLException;
 	Optional<Snapshot> findSnapshotBySnapshotId(Integer id) throws SQLException;
 }

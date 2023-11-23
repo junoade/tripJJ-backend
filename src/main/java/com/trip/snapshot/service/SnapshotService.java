@@ -14,6 +14,7 @@ public interface SnapshotService {
 	int modifySnapshot(Snapshot snapshot, Map<String, Object> area) throws SQLException, InvalidPlaceException;
 	int deleteSnapshot(Integer id) throws SQLException;
 	
+	List<Snapshot> getSnapshotList() throws SQLException;
 	List<Snapshot> getSnapshotByUserId(String userId) throws SQLException;
 	Optional<Snapshot> getSnapshotBySnapshotId(Integer id) throws SQLException;
 	

@@ -60,6 +60,11 @@ public class SnapshotServiceImpl implements SnapshotService {
         // TODO Auto-generated method stub
         return 0;
     }
+    
+    @Override
+    public List<Snapshot> getSnapshotList() throws SQLException {
+    	return snapshotMapper.findSnapshotList();
+    }
 
     @Override
     public List<Snapshot> getSnapshotByUserId(String userId) throws SQLException {

@@ -2,8 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.snapshot.mapper.SnapshotMapper">
 
-	<resultMap type="Snapshot" id="SnapshotDto">
+	<resultMap id="snapshot" type="Snapshot">
+		<id column="id" property="id"/>
+		<result column="userId" property="userId"/>
+		<result column="content_id" property="contentId"/>
+		<result column="tag" property="tag"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="publishedDate" property="publishedDate"/>
+		<association property="member" resultMap="member"/>
+		<association property="attractionInfo" resultMap="attractonInfoDB"/>
 	</resultMap>
+	
+	<resultMap id="member" type="com.trip.member.MemberDto">
+		<!-- column - property간 네이밍 동일 -->
+	</resultMap>
+	
+	 <resultMap id="attractonInfoDB" type="com.trip.search.dto.AttractionInfo_DB">
+        <id column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="addr1" property="addr1"/>
+        <result column="addr2" property="addr2"/>
+        <result column="content_type_id" property="contentTypeId"/>
+        <result column="readcount" property="readCount"/>
+        <result column="first_image" property="firstImage"/>
+        <result column="first_image2" property="firstImage2"/>
+    </resultMap>
 	
 	<insert id="insertSnapshot" parameterType="Snapshot">
 		INSERT INTO snapshot(userId, content_id, tag, start_date, end_date) 
@@ -15,11 +39,20 @@
 	
 	<delete id="deleteSnapshot" parameterType="int">
 	</delete>
+	
+	<select id="findSnapshotList" resultMap="snapshot">
+		SELECT *
+		FROM snapshot as s 
+			INNER JOIN member as m 
+				ON s.userId = m.userId
+			INNER JOIN Attraction_Info as a
+				ON a.content_Id = s.content_id;
+	</select>
 		
-	<select id="findSnapshotByUserId" parameterType="string" resultMap="SnapshotDto">
+	<select id="findSnapshotByUserId" parameterType="string" resultMap="snapshot">
 	</select>
 	
-	<select id="findSnapshotByStoryId" parameterType="int" resultMap="SnapshotDto">
+	<select id="findSnapshotByStoryId" parameterType="int" resultMap="snapshot">
 	</select>
 	
 </mapper>

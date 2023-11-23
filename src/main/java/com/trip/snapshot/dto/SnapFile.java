@@ -8,5 +8,5 @@ public class SnapFile {
 	private String storedFilename;
 	private String storePathPrefix;
 	private Long size;
-	private String createdDate;
+	private String createdDate;	
 }
