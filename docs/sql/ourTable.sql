@@ -150,7 +150,7 @@ CREATE TABLE `Snapshot`(
     `tag` VARCHAR(100),
     `start_date` TIMESTAMP,
     `end_date` TIMESTAMP,
-    `registeredDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `publishedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     KEY `snapshot_and_members_fk` (`userId`),
                          CONSTRAINT `snapshot_and_members_fk` FOREIGN KEY (`userId`) REFERENCES `member` (`userId`),
     KEY `snapshot_and_attractionInfo_fk` (`content_id`),
@@ -192,3 +192,6 @@ select * from interest;
 select * from snapshot;
 select * from attraction_kakao;
 select * from snap_file;
+
+desc attraction_info;
+desc attraction_description;
