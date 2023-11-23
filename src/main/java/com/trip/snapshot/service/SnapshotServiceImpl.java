@@ -46,20 +46,6 @@ public class SnapshotServiceImpl implements SnapshotService {
         return snapshotMapper.insertSnapshot(snapshot);
     }
 
-    private void validateAddressInfo(String road_address_name, String place_name) throws InvalidPlaceException {
-        if (road_address_name.equals("") || place_name.equals("")) {
-            throw new InvalidPlaceException();
-        }
-    }
-    
-    private String getRoadAddressOrAddress(Map<String, Object> area) {
-    	String result = (String) area.get("road_address_name");
-    	if(result == null || result.equals("")) {
-    		result = (String) area.get("address_name");
-    	} 
-    	return result;
-    }
-
     @Override
     public int modifySnapshot(Snapshot snapshot, Map<String, Object> area) throws SQLException {
         // TODO Auto-generated method stub
@@ -86,6 +72,20 @@ public class SnapshotServiceImpl implements SnapshotService {
     public Optional<Snapshot> getSnapshotBySnapshotId(Integer id) throws SQLException {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    private void validateAddressInfo(String road_address_name, String place_name) throws InvalidPlaceException {
+        if (road_address_name.equals("") || place_name.equals("")) {
+            throw new InvalidPlaceException();
+        }
+    }
+    
+    private String getRoadAddressOrAddress(Map<String, Object> area) {
+    	String result = (String) area.get("road_address_name");
+    	if(result == null || result.equals("")) {
+    		result = (String) area.get("address_name");
+    	} 
+    	return result;
     }
 
 
