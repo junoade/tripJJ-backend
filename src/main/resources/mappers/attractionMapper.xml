@@ -10,7 +10,6 @@
 		<result column="addr2" property="addr2"/>
 		<result column="first_image" property="firstImage"/>
 	</resultMap>
-	
 	<resultMap type="InterestDto" id="interest">
 		<result column="content_id" property="contentId" />
 		<result column="userId" property="userId"/>
@@ -139,5 +138,4 @@
 		SELECT * FROM hotplace
 		WHERE placeNo = #{placeNo}
 	</select>
-	
 </mapper>

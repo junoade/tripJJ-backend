@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.trip.member.MemberDto;
 import com.trip.member.dao.MemberDao;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
 public class MemberServiceImpl implements MemberService {
@@ -37,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDto login(String userId, String userPass) throws Exception {
 		MemberDto member = memberDao.login(userId);
+		log.debug("db member {}", member);
 		return member!=null && authUser(userPass, member.getUserPass()) ? member : null;
 	}
 

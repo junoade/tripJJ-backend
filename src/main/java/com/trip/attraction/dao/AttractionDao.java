@@ -3,7 +3,9 @@ package com.trip.attraction.dao;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.trip.search.dto.AttractionInfo;
 import org.apache.ibatis.annotations.Mapper;
 import com.trip.attraction.AttractionInfoDto;
 import com.trip.attraction.HotplaceDto;

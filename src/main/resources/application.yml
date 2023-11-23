@@ -14,6 +14,12 @@ spring:
       suffix: .jsp
     pathmatch:
       matching-strategy: ant-path-matcher
+  # multipartFile maximum permitted size
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
 logging:
   level:
     com:
@@ -34,3 +40,7 @@ jwt:
     refresh-token:
         # 30 days
         expirationMillis: 2592000000
+
+# 임시 이미지 저장 경로
+upload:
+  path: C:/springrest-images/

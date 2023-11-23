@@ -1,5 +1,6 @@
 package com.trip.controller;
 
+import com.trip.exceptions.InvalidPlaceException;
 import com.trip.security.exception.UnAuthroizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,11 @@ public class RestExceptionController {
 	public ResponseEntity<?> unAuthroized(UnAuthroizedException e) {
 		e.printStackTrace();
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(InvalidPlaceException.class)
+	public ResponseEntity<?> invalidPlace(InvalidPlaceException e) {
+		e.printStackTrace();
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

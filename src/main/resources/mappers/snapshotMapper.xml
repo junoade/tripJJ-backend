@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.snapshot.mapper.SnapshotMapper">
+
+	<resultMap type="Snapshot" id="SnapshotDto">
+	</resultMap>
+	
+	<insert id="insertSnapshot" parameterType="Snapshot">
+		INSERT INTO snapshot(userId, content_id, tag, start_date, end_date) 
+			VALUES (#{userId}, #{contentId}, #{tag}, #{startDate}, #{endDate});
+	</insert>
+	
+	<update id="modifySnapshot" parameterType="Snapshot">
+	</update>
+	
+	<delete id="deleteSnapshot" parameterType="int">
+	</delete>
+		
+	<select id="findSnapshotByUserId" parameterType="string" resultMap="SnapshotDto">
+	</select>
+	
+	<select id="findSnapshotByStoryId" parameterType="int" resultMap="SnapshotDto">
+	</select>
+	
+</mapper>
