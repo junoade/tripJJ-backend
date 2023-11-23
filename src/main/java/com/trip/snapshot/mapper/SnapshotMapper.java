@@ -22,4 +22,8 @@ public interface SnapshotMapper {
 
 	int insertSnapshotFiles(@Param("snapId") Integer snapId, @Param("files") List<SnapFile> files);
 	List<SnapFile> findBySnapId(Integer snapId);
+
+	List<SnapFile> getAllGroupRepresentImage() throws SQLException;
+
+	SnapFile getGroupRepresentImage(String snapId) throws SQLException;
 }

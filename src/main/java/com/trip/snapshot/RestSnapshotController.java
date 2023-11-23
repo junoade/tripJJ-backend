@@ -3,13 +3,18 @@ package com.trip.snapshot;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.trip.exceptions.InvalidPlaceException;
+import com.trip.snapshot.dto.SnapFile;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -98,6 +103,37 @@ public class RestSnapshotController {
 //		formData.add("file-data_3", new FileSystemResource("C:\Users\ganeshg\Desktop\odstext.txt"));
 //		formData.add("file-data_4", new FileSystemResource("D:\Agent\152845.docx"));
 //		formData.add("file-data_5", new FileSystemResource("D:\testxls.xlsx"));
+		return new ResponseEntity<>(formData, HttpStatus.OK);
+	}
+
+	@GetMapping("/getImage/{snapId}")
+	public ResponseEntity<byte[]> getImage(@PathVariable String snapId) throws IOException, SQLException {
+
+		SnapFile file = snapshotService.getGroupRepresentImage(snapId);
+		log.debug(file.toString());
+		FileSystemResource resource = new FileSystemResource(file.getStorePathPrefix() + file.getStoredFilename());
+
+		// Check if the image exists
+		if (resource.exists()) {
+			log.debug("있다");
+			byte[] imageBytes = Files.readAllBytes(resource.getFile().toPath());
+			return ResponseEntity.ok().contentType(MediaType.valueOf(file.getOriginalExtension())).body(imageBytes);
+		} else {
+			// Image not found
+			log.debug("없다");
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping(value="/getImages", produces= MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<?> getImages() throws SQLException {
+		List<SnapFile> files = snapshotService.getAllGroupRepresentImage();
+
+		MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
+		for(SnapFile file : files) {
+			FileSystemResource resource = new FileSystemResource(file.getStorePathPrefix() + file.getStoredFilename());
+			formData.add(file.getSnapId().toString(), resource);
+		}
 		return new ResponseEntity<>(formData, HttpStatus.OK);
 	}
 }

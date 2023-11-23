@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.trip.exceptions.InvalidPlaceException;
+import com.trip.snapshot.dto.SnapFile;
 import com.trip.snapshot.dto.Snapshot;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,5 +23,8 @@ public interface SnapshotService {
 	Optional<Snapshot> getSnapshotBySnapshotId(Integer id) throws SQLException;
 
 	int saveFiles(Integer snapshotId, List<MultipartFile> files) throws IOException;
-	
+
+	List<SnapFile> getAllGroupRepresentImage() throws SQLException;
+
+	SnapFile getGroupRepresentImage(String snapId) throws SQLException;
 }

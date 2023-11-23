@@ -102,4 +102,19 @@
 		FROM SNAP_FILE
 		WHERE snap_id = #{snapId}
 	</select>
+
+	<!-- 각 그룹(snap_id)별로 대표 이미지만 -->
+	<select id="getAllGroupRepresentImage" resultMap="snapFile">
+		SELECT *
+		FROM snap_file WHERE id IN (
+			SELECT MIN(id) FROM snap_file GROUP BY snap_id
+		)
+	</select>
+
+	<select id="getGroupRepresentImage" resultMap="snapFile">
+		SELECT *
+		FROM snap_file WHERE id IN (
+			SELECT MIN(id) FROM snap_file GROUP BY snap_id
+		) AND snap_id = #{snapId};
+	</select>
 </mapper>

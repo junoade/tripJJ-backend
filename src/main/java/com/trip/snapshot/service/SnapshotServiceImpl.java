@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.trip.search.mapper.PlaceSearchMapper;
 import com.trip.snapshot.dto.SnapFile;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +20,7 @@ import com.trip.snapshot.mapper.SnapshotMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -103,7 +102,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             log.debug("==> converted : SnapFile dto : {}", dto);
 
             dto.setSnapId(snapshotId);
-            dto.setStoredFilename(getUniqueFilename());
+            dto.setStoredFilename(getUniqueFilename() + "."+splitExtension(dto.getOriginalExtension()));
             dto.setStorePathPrefix(USER_DIR);
 
             log.debug("==> save : SnapFile dto : {}", dto);
@@ -122,6 +121,10 @@ public class SnapshotServiceImpl implements SnapshotService {
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         return currentTime.format(formatter);
+    }
+
+    private String splitExtension(String originalExtension) {
+        return originalExtension.split("/")[1];
     }
 
     private void makeUploadDirIfNotExists() {
@@ -158,6 +161,16 @@ public class SnapshotServiceImpl implements SnapshotService {
     public Optional<Snapshot> getSnapshotBySnapshotId(Integer id) throws SQLException {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public List<SnapFile> getAllGroupRepresentImage() throws SQLException {
+        return snapshotMapper.getAllGroupRepresentImage();
+    }
+
+    @Override
+    public SnapFile getGroupRepresentImage(String snapId) throws SQLException {
+        return snapshotMapper.getGroupRepresentImage(snapId);
     }
 
     private void validateAddressInfo(String road_address_name, String place_name) throws InvalidPlaceException {
