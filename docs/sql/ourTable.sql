@@ -1,5 +1,8 @@
 USE `enjoytrip_doublejj`;
 
+drop table if exists `attraction_kakao`;
+drop table if exists `snap_file`;
+drop table if exists `snapshot`;
 drop table if exists `interest`;
 drop table if exists `reply`;
 drop table if exists `board_qna`;
@@ -140,8 +143,52 @@ INSERT INTO interest(`userId`, `content_id`) VALUES
     ('ssafy123', 125266), ('ssafy123', 125576), ('ssafy123', 125577), ('ssafy123', 125578), ('ssafy123', 125579), 
     ('test', 125632), ('test', 125631), ('test', 125630), ('test', 125266), ('test', 125407);
     
+CREATE TABLE `Snapshot`(
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `userId` varchar(16) NOT NULL,
+    `content_id` INT NOT NULL,
+    `tag` VARCHAR(100),
+    `start_date` TIMESTAMP,
+    `end_date` TIMESTAMP,
+    `registeredDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY `snapshot_and_members_fk` (`userId`),
+                         CONSTRAINT `snapshot_and_members_fk` FOREIGN KEY (`userId`) REFERENCES `member` (`userId`),
+    KEY `snapshot_and_attractionInfo_fk` (`content_id`),
+                         CONSTRAINT `snapshot_and_attractionInfo_fk` FOREIGN KEY (`content_id`) REFERENCES `attraction_info` (`content_id`)
+);
+
+CREATE TABLE ATTRACTION_KAKAO(
+     `content_id` INT AUTO_INCREMENT PRIMARY KEY,
+     `title` VARCHAR(100),
+     `addr1` VARCHAR(100), -- KAKAO API의 도로명 주소(road_address_name)
+     `readcount` INT DEFAULT 0, 
+     `latitude` DECIMAL(20,17), -- KAKAO API의 y좌표(위도)
+     `longitude` DECIMAL(20,17), -- KAKAO API의 x좌표(경도)
+     -- 카카오맵 API의 고유 정보
+     `phone` VARCHAR(20),
+     `category_group_code` VARCHAR(10),
+     `category_group_name` VARCHAR(20),
+     `category_name` VARCHAR(50),
+     `place_url` VARCHAR(255)
+);
+
+CREATE TABLE snap_file (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    snap_id INT,
+    original_filename VARCHAR(255),
+    original_extension VARCHAR(50),
+    stored_filename VARCHAR(255),
+    store_path_prefix VARCHAR(255),
+    size BIGINT,
+    created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (snap_id) REFERENCES Snapshot(id)
+);
+
 
 select * from member;
 select * from board_qna;
 select * from reply;
 select * from interest;
+select * from snap;
+select * from attraction_kakao;
+select * from snap_file;
