@@ -12,8 +12,6 @@ import com.trip.qna.BoardQnaPagingList;
 import com.trip.qna.ReplyDto;
 import com.trip.qna.dao.BoardQnaDao;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
 @Transactional
 public class BoardQnaServiceImpl implements BoardQnaService {

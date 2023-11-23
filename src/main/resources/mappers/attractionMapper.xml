@@ -10,23 +10,28 @@
 		<result column="addr2" property="addr2"/>
 		<result column="first_image" property="firstImage"/>
 	</resultMap>
-
-	<!-- 검색 조건문 -->
+	<resultMap type="InterestDto" id="interest">
+		<result column="content_id" property="contentId" />
+		<result column="userId" property="userId"/>
+	</resultMap>
+	
+	<!-- 관광지 검색 조건문 -->
 	<sql id="search">
 		<if test="sidoCode!='' and sidoCode!=null">
-			ai.sido_code = #{sidoCode}
+			AND ai.sido_code = #{sidoCode}
 		</if>
 		<if test="gugunCode!='' and gugunCode!=null">
-			ai.gugun_code = #{gugunCode}
+			AND ai.gugun_code = #{gugunCode}
 		</if>
 		<if test="contentTypeId!='' and contentTypeId!=null">
-			ai.content_type_id = #{contentTypeId}
+			AND ai.content_type_id = #{contentTypeId}
 		</if>
 		<if test="title!='' and title!=null">
-			ai.title LIKE CONCAT('%', #{title}, '%')
+			AND ai.title LIKE CONCAT('%', #{title}, '%')
 		</if>
 	</sql>
 	
+	<!-- 관광지 조회 -->
 	<select id="listAttraction" parameterType="map" resultType="AttractionInfoDto">
 		SELECT
 			ai.content_id 'contentId', ai.content_type_id 'contentTypeId', ai.title 'title', 
@@ -42,6 +47,7 @@
 		LIMIT #{start}, #{listsize}
 	</select>
 	
+	<!-- 관광지 조회 결과 총 수 -->
 	<select id="getTotalAttractionCount" parameterType="map" resultType="int">
 		SELECT COUNT(ai.content_id) 
 		FROM attraction_info ai
@@ -52,25 +58,66 @@
 		</where>
 	</select>
 	
-	<!-- <select id="listAttraction" parameterType="map" resultType="AttractionInfoDto">
+	<!-- 특정 사용자가 저장한 관심 관광지 조회 with 검색 조건 -->
+	<select id="listInterest" parameterType="map" resultType="AttractionInfoDto">
 		SELECT
 			ai.content_id 'contentId', ai.content_type_id 'contentTypeId', ai.title 'title', 
-			ai.addr1 'addr1', ai.addr2 'addr2', ai.first_image 'firstImage'
+			ai.addr1 'addr1', ai.addr2 'addr2', ai.first_image 'firstImage', ad.overview 'overview',
+			ai.latitude 'latitude', ai.longitude 'longitude'
 		FROM attraction_info ai
-		<where>
-			<include refid="search"></include>
-		</where>
+		LEFT OUTER JOIN attraction_description ad
+		ON ai.content_id=ad.content_id
+		WHERE ai.content_id IN (
+							SELECT i.content_id 
+        					FROM interest i 
+        					WHERE i.userId=#{userId})
+        <include refid="search"></include>
 		ORDER BY ai.content_id
 		LIMIT #{start}, #{listsize}
 	</select>
 	
-	<select id="getTotalAttractionCount" parameterType="map" resultType="int">
-		SELECT COUNT(ai.content_id) 
+	<!-- 특정 사용자의 모든 관심 관광지 content_id 조회 -->
+	<select id="listInterestContentId" parameterType="String" resultType="int">
+		SELECT content_id
+		FROM interest
+		WHERE userId = #{userId}
+	</select>
+	
+	<!-- 특정 사용자가 저장한 관심 관광지 조회 총 개수 with 검색 조건 -->
+	<select id="getTotalInterestCount" parameterType="map" >
+		SELECT COUNT(ai.content_id)
 		FROM attraction_info ai
-		<where>
-			<include refid="search"></include>
-		</where>
-	</select> -->
+		LEFT OUTER JOIN attraction_description ad
+		ON ai.content_id=ad.content_id
+		WHERE ai.content_id IN (
+							SELECT i.content_id 
+        					FROM interest i 
+        					WHERE i.userId=#{userId})
+        <include refid="search"></include>
+	</select>
+	
+	<!-- 사용자가 관심 관광지 추가 -->
+	<insert id="insertInterests" parameterType="map">
+		<if test="addInterests!=null and addInterests.size>0">
+			INSERT INTO interest(userId, content_id)
+			VALUES
+			<foreach collection="addInterests" index="idx" item="contentId" separator="," >
+				(#{userId}, #{contentId})
+			</foreach>
+		</if>
+	</insert>
+	
+	<!-- 사용자가 관심 관광지 삭제 -->
+	<delete id="deleteInterests" parameterType="map">
+		<if test="delInterests!=null and delInterests.size>0">
+			DELETE FROM interest
+			WHERE userId = #{userId} 
+			AND content_id IN (
+			<foreach collection="delInterests" index="idx" item="contentId" separator=",">
+				#{contentId}
+			</foreach>)
+		</if>
+	</delete>
 	
 	<insert id="saveHotplace" parameterType="HotplaceDto">
 		INSERT INTO hotplace(placeName, visitedDate, detail, userId)

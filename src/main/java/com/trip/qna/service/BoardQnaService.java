@@ -1,7 +1,6 @@
 package com.trip.qna.service;
 
 import java.sql.SQLException;
-import org.apache.ibatis.annotations.Mapper;
 import com.trip.qna.BoardQnaDto;
 import com.trip.qna.BoardQnaPagingList;
 import com.trip.qna.ReplyDto;
