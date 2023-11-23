@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,7 +54,7 @@ public class RestSnapshotController {
 		log.debug("uploadStory 호출");
 		log.debug("snapshot : {}, area : {}", snapshot, area);
 		
-//		String uploadDir = "C:/SSAFY/trip_jj/triprest/images/" ;
+		checkUploadDir();
 		
 		for(MultipartFile file : files) {
 			log.debug("업로드 이미지 : {} {} {}", file.getName(), file.getOriginalFilename(), file.getResource());
@@ -74,10 +75,24 @@ public class RestSnapshotController {
 		return new ResponseEntity<>(status);
 	}
 	
+	private void checkUploadDir() {
+		File dir = new File(USER_DIR);
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
+	}
+	
 	@GetMapping
 	public ResponseEntity<?> getStories() throws SQLException {
 		log.debug("getStories 호출");
 		List<Snapshot> list = service.getSnapshotList();
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<?> getUserStories(@PathVariable String userId) throws SQLException {
+		log.debug("getStories 호출");
+		List<Snapshot> list = service.getSnapshotByUserId(userId);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
