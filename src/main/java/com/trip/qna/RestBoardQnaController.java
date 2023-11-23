@@ -1,4 +1,4 @@
-package com.trip.controller;
+package com.trip.qna;
 
 import java.nio.charset.Charset;
 import java.sql.SQLException;
@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.trip.qna.BoardQnaDto;
-import com.trip.qna.BoardQnaPagingList;
-import com.trip.qna.ReplyDto;
+
 import com.trip.qna.service.BoardQnaServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

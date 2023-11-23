@@ -1,6 +1,5 @@
-package com.trip.controller;
+package com.trip.board;
 
-import com.trip.board.BoardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

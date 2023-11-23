@@ -1,9 +1,5 @@
-package com.trip.controller;
+package com.trip.attraction;
 
-import com.trip.attraction.AttractionInfoPagingList;
-import com.trip.attraction.HotplaceDto;
-import com.trip.attraction.InterestDto;
-import com.trip.attraction.SidoGugunDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

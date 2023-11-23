@@ -1,4 +1,4 @@
-package com.trip.controller;
+package com.trip.member;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.trip.member.MemberDto;
+
 import com.trip.member.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;

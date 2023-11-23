@@ -1,4 +1,4 @@
-package com.trip.controller;
+package com.trip.attraction;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.trip.attraction.SidoGugunDto;
+
 import com.trip.attraction.service.SidoGugunService;
 import lombok.extern.slf4j.Slf4j;
 
