@@ -30,12 +30,12 @@
         <result column="place_url" property="placeUrl"/>
     </resultMap>
 
-
     <select id="findAttractionIdByAddress" parameterType="string">
         SELECT content_id
         FROM attraction_info
         WHERE addr1 LIKE CONCAT('%', REPLACE(#{road_address_name}, ' ', '%'), '%')
-          AND title LIKE CONCAT('%', #{place_name}, '%');
+          AND title LIKE CONCAT('%', #{place_name}, '%')
+        LIMIT 1
     </select>
 
     <select id="findAttractionByAddress" parameterType="string" resultMap="attractionInfoDB">
