@@ -18,6 +18,7 @@ public class Snapshot {
 	private Integer id;
 	private String userId;
 	private Integer contentId; // 관광지정보 테이블 pk
+	private String content;
 	private String tag;	
 	private String startDate;
 	private String endDate;

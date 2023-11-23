@@ -14,7 +14,9 @@ import com.trip.snapshot.dto.Snapshot;
 import com.trip.snapshot.mapper.SnapshotMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SnapshotServiceImpl implements SnapshotService {
@@ -29,11 +31,12 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public int uploadSnapshot(Snapshot snapshot, Map<String, Object> area) throws SQLException, InvalidPlaceException {
 
-        String road_address_name = (String) area.get("road_address_name");
+        String address = getRoadAddressOrAddress(area);
         String place_name = (String) area.get("place_name");
-        validateAddressInfo(road_address_name, place_name);
-
-        int contentId = placeSearchMapper.findAttractionIdByAddress(road_address_name, place_name);
+        validateAddressInfo(address, place_name);
+        log.debug("road_address_name : {}, place_name : {}", address, place_name);
+        
+        int contentId = placeSearchMapper.findAttractionIdByAddress(address, place_name);
         if (contentId == 0) {
             throw new InvalidPlaceException();
         }
@@ -47,6 +50,14 @@ public class SnapshotServiceImpl implements SnapshotService {
         if (road_address_name.equals("") || place_name.equals("")) {
             throw new InvalidPlaceException();
         }
+    }
+    
+    private String getRoadAddressOrAddress(Map<String, Object> area) {
+    	String result = (String) area.get("road_address_name");
+    	if(result == null || result.equals("")) {
+    		result = (String) area.get("address_name");
+    	} 
+    	return result;
     }
 
     @Override
@@ -68,8 +79,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public List<Snapshot> getSnapshotByUserId(String userId) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return snapshotMapper.findSnapshotByUserId(userId);
     }
 
     @Override
