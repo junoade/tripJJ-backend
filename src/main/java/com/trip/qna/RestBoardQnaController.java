@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trip.qna.service.BoardQnaService;
 import com.trip.qna.service.BoardQnaServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RestBoardQnaController {
 
 	@Autowired
-	private BoardQnaServiceImpl bs;
+	private BoardQnaService bs;
 	
 //	QNA 등록
 	@PostMapping("/write")
