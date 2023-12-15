@@ -21,3 +21,9 @@ https://drive.google.com/file/d/1Dm1B6kfl8MLUQQ7wD4LWfBUPL8zPgl13/view?usp=shari
 ![image](https://github.com/junoade/tripJJ-frontend/assets/54317409/28dcd69c-3670-4330-92a5-7fa1ed1414ab)
 
 <br/>
+
+## Features
+
+
+## Timeline
+231216 - Researching how to integrate backend & frontend repository with Jira Software.
